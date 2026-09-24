@@ -24,27 +24,45 @@ The intended first user flow is: open the website → import an ECG CSV → read
 - Show Duration, Sampling Rate, Maximum, Minimum, and Mean.
 - Explain the displayed values in plain language so a beginner can connect the rows, the axes, and the summary.
 
-The precise accepted time unit, voltage unit, CSV validation rules, and sampling-rate calculation will be decided before implementing the relevant phase and recorded in `DECISIONS.md`.
+### CSV specification
+
+- File type: CSV, with exactly two columns and the exact header row `time,voltage`.
+- `time`: numeric values in seconds (s), strictly increasing in file order.
+- `voltage`: numeric values in millivolts (mV).
+- The MVP assumes approximately evenly sampled ECG data.
+- Arbitrary column names and alternative units are not supported.
+
+### Output definitions
+
+- ECG waveform: voltage (mV) against time (s).
+- Duration (s): last time value minus first time value.
+- Sampling Rate (Hz): estimated from the intervals between consecutive time values. For at least two samples, use the reciprocal of the mean interval: `1 / mean(time[i+1] - time[i])`. This estimate relies on the approximately even sampling assumption.
+- Maximum, Minimum, and Mean (mV): respectively the maximum, minimum, and arithmetic mean of the voltage values.
+
+The numeric tolerance for approximately even sampling and the response to insufficient samples will be documented as validation details in Phase 2 before implementation. The MVP does not include resampling or correction of irregular data.
 
 ## Non-goals for the current MVP
 
 - Medical diagnosis, clinical advice, disease classification, or arrhythmia detection.
 - User login, accounts, database, or server-side storage.
 - EEG, PPG, EMG, or other signal types.
-- Complex filtering, signal processing, R-peak detection, or heart-rate estimation.
-- Large AI features or dependencies added only to make the project appear complete.
+- Complex filtering or other complex signal processing, R-peak detection, or heart-rate estimation.
+- AI analysis of any kind, or dependencies added only to make the project appear complete.
 
 ## Constraints
 
 - Keep the first version small, useful, and real. Make the smallest change necessary.
 - Finish and accept one clearly scoped phase before starting the next.
 - Record meaningful work, decisions, errors, tests, and human acceptance.
-- Use Git checkpoints for local history; connect to GitHub when the owner chooses a repository.
+- Maintain `DEV_LOG.md`, `DECISIONS.md`, `ERROR_LOG.md`, and Git checkpoints throughout development.
+- The planned GitHub repository is `biosignal-explorer`, public, under the owner's personal GitHub account. Its creation and connection are not part of this documentation update; only local Git exists currently.
 - Do not add features outside the current MVP without an explicit scope decision.
 
 ## Technical direction
 
-Prefer a simple browser-based solution that a beginner can inspect and maintain. Plain HTML, CSS, and JavaScript are the initial direction, not a locked implementation decision. Confirm the smallest workable approach in Phase 1. No framework, database, or substantial dependency is justified by the current requirements. Keep uploaded data local to the browser if this direction is used.
+The confirmed approach is a browser-based web application built with HTML, CSS, and Vanilla JavaScript. Do not use React, Vue, Next.js, a backend, or a database in the MVP. All ECG files are read and processed locally in the browser and are never uploaded to a server.
+
+The intended running method is to open the future static HTML entry page in a browser, without a framework or build step. No runnable page exists yet. Keep the code structure simple and introduce separation only when actual implementation needs it; do not build abstractions for hypothetical future signals or features.
 
 ## Success criteria
 
@@ -56,4 +74,4 @@ Prefer a simple browser-based solution that a beginner can inspect and maintain.
 
 ## Future expansion principle
 
-After observing real student use, add one valuable capability at a time. ECG analysis, R-peaks, heart rate, filtering, and other signal types are possible later directions, but none is part of this MVP. Each addition needs its own scope, decision, tests, and acceptance before implementation.
+This is a long-term, continuously iterative project. After observing real student use, add one valuable capability at a time. ECG analysis, R-peaks, heart rate, filtering, and other signal types are possible later directions, but none is part of this MVP. Define and record each future feature as a separate phase with scope, decisions, tests, and human acceptance. Start it only after the previous phase has been accepted; acceptance does not automatically start further work.
