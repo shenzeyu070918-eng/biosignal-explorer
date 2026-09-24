@@ -29,17 +29,20 @@ The intended first user flow is: open the website → import an ECG CSV → read
 - File type: CSV, with exactly two columns and the exact header row `time,voltage`.
 - `time`: numeric values in seconds (s), strictly increasing in file order.
 - `voltage`: numeric values in millivolts (mV).
-- The MVP assumes approximately evenly sampled ECG data.
+- At least 3 valid data rows are required. Both columns must contain numeric values in every data row.
+- Let each adjacent interval be `Δt_i = time[i+1] - time[i]`, and let `μ = mean(Δt)`. Strictly increasing time makes every interval and `μ` positive.
+- Data is approximately uniformly sampled only if every interval satisfies `abs(Δt_i - μ) <= 0.05 * μ`. The 5% boundary is inclusive.
+- Reject any file that violates these rules with a clear user-facing error message. Do not silently discard invalid rows to make a file pass validation.
 - Arbitrary column names and alternative units are not supported.
 
 ### Output definitions
 
 - ECG waveform: voltage (mV) against time (s).
 - Duration (s): last time value minus first time value.
-- Sampling Rate (Hz): estimated from the intervals between consecutive time values. For at least two samples, use the reciprocal of the mean interval: `1 / mean(time[i+1] - time[i])`. This estimate relies on the approximately even sampling assumption.
+- Sampling Rate (Hz): later calculate `1 / mean(Δt)` for a file that passes all CSV validation rules, including the minimum of 3 valid data rows and the 5% sampling-uniformity limit.
 - Maximum, Minimum, and Mean (mV): respectively the maximum, minimum, and arithmetic mean of the voltage values.
 
-The numeric tolerance for approximately even sampling and the response to insufficient samples will be documented as validation details in Phase 2 before implementation. The MVP does not include resampling or correction of irregular data.
+These are documented requirements for future implementation. The MVP does not include resampling or correction of irregular data.
 
 ## Non-goals for the current MVP
 
@@ -70,7 +73,7 @@ The intended running method is to open the future static HTML entry page in a br
 2. `time` and `voltage` are read correctly.
 3. The ECG waveform is clearly visible with meaningful axes.
 4. Duration, Sampling Rate, Maximum, Minimum, and Mean are displayed correctly for known sample data.
-5. A beginner can explain how the CSV rows relate to the plotted waveform and basic information after using the page.
+5. In Phase 5, at least one target user can identify how a CSV data point relates to the waveform and explain at least one displayed signal parameter in their own words.
 
 ## Future expansion principle
 

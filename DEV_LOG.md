@@ -2,6 +2,8 @@
 
 Add one entry for each meaningful work package. Keep test evidence and human acceptance separate; AI verification does not imply student acceptance.
 
+**Current status:** Phase 1 — Accepted by the student on 2026-09-24 after human review. Stable local checkpoint: Git tag `phase-1-accepted`. Phase 2 has not started. Earlier entries describe the state at their checkpoints; the latest entry records the current acceptance and decisions.
+
 ## Entry template
 
 ### Date
@@ -61,7 +63,7 @@ Phase 1 — Project Foundation, initial documentation work package
 
 ### Human acceptance
 
-- The student accepted the initial skeleton and phase breakdown on 2026-09-24. Full Phase 1 acceptance awaits the scope confirmation below.
+- The student accepted the initial skeleton and phase breakdown on 2026-09-24. Full Phase 1 acceptance was subsequently recorded in the acceptance entry below.
 
 ### Next step
 
@@ -77,7 +79,7 @@ Phase 1 — Project Foundation, initial documentation work package
 
 ### Phase
 
-Phase 1 — Project Foundation, documentation-only scope confirmation; ready for human acceptance.
+Phase 1 — Project Foundation, documentation-only scope confirmation; ready for human acceptance at this historical checkpoint.
 
 ### What was completed
 
@@ -88,11 +90,11 @@ Phase 1 — Project Foundation, documentation-only scope confirmation; ready for
 - Confirmed MVP exclusions, long-term maintenance of all three logs and Git checkpoints, and human acceptance before further phases.
 - Recorded acceptance of the initial skeleton and phase breakdown separately from the pending acceptance of the updated Phase 1 documents.
 - Left `ERROR_LOG.md` unchanged because no new error incident occurred. No business code or dependencies were added.
-- Local documentation checkpoint: commit message `docs: confirm Phase 1 scope and acceptance gate` (inspect Git history for its hash).
+- Local documentation checkpoint: `1860aef` — `docs: confirm Phase 1 scope and acceptance gate`.
 
 ### Problems
 
-- None. Sampling tolerance and insufficient-sample handling are planned Phase 2 validation details, not open Phase 1 scope decisions.
+- None. At this checkpoint, sampling tolerance and insufficient-sample handling were deferred; the acceptance entry below records their subsequent resolution.
 
 ### Testing
 
@@ -104,8 +106,50 @@ Phase 1 — Project Foundation, documentation-only scope confirmation; ready for
 ### Human acceptance
 
 - Initial skeleton and phase breakdown: accepted by the student on 2026-09-24.
-- Updated Phase 1 scope confirmation: ready for human acceptance; acceptance is pending. Phase 1 is not marked complete.
+- Updated Phase 1 scope confirmation: acceptance was pending at this checkpoint and was subsequently recorded in the acceptance entry below.
 
 ### Next step
 
-- Stop and await the student's review of the updated Phase 1 documents. Record explicit acceptance before any later phase; Phase 2 requires a subsequent instruction to begin.
+- The requested review was completed by the student; see the acceptance entry below. Phase 2 still requires a subsequent instruction to begin.
+
+---
+
+## 2026-09-24 — Phase 1: Human acceptance and stable checkpoint
+
+### Date
+
+2026-09-24
+
+### Phase
+
+Phase 1 — Project Foundation: Accepted.
+
+### What was completed
+
+- Recorded the student's explicit acceptance of Phase 1 in `PLAN.md`, this log, and the status summaries in `README.md` and `DECISIONS.md`.
+- Updated `PROJECT_SCOPE.md`, `PLAN.md`, `README.md`, and `DECISIONS.md` with the exact `time,voltage` headers, numeric values in both columns, at least 3 valid data rows, and strictly increasing time.
+- Recorded adjacent intervals `Δt`, later Sampling Rate calculation `1 / mean(Δt)`, and the inclusive rule that every interval differs from the mean by no more than 5%.
+- Recorded whole-file rejection with clear user-facing errors for validation violations, without silently discarding invalid rows.
+- Added a future Phase 5 Human Acceptance check: at least one target user must connect a CSV point to the waveform and explain at least one displayed signal parameter in their own words; responses will be recorded here during Phase 5.
+- Preserved the accepted documentation state with commit message `docs: record Phase 1 acceptance and CSV validation rules` and annotated local Git tag `phase-1-accepted`.
+
+### Problems
+
+- None. `ERROR_LOG.md` has no new incident to record.
+
+### Testing
+
+- Reviewed all six documents for consistent acceptance status, CSV validation rules, output definitions, and phase boundaries.
+- Checked that the minimum is 3 valid rows, the 5% bound applies to every interval and is inclusive, and invalid files are rejected.
+- Verified the Phase 5 learning check is future human work, with both requested tasks and a record of the user's responses.
+- Checked the Git diff for whitespace errors and confirmed that changes are limited to five Markdown documents; no business code or dependencies were added.
+- No application tests were run because no application code exists.
+
+### Human acceptance
+
+- Phase 1 — Accepted. The student explicitly stated: “Phase 1 — Project Foundation is ACCEPTED.”
+- Acceptance date: 2026-09-24. The validation decisions and future Phase 5 acceptance item were supplied in the same instruction.
+
+### Next step
+
+- Stop after the documentation checkpoint. Wait for a separate instruction to begin Phase 2; human acceptance of Phase 1 does not automatically authorize implementation.
