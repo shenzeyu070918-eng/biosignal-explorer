@@ -6,7 +6,7 @@ BioSignal Explorer is a small learning project for students beginning to study E
 
 The MVP excludes React, Vue, Next.js, a backend, a database, login, diagnosis, arrhythmia classification, AI analysis, EEG/PPG/EMG, and complex signal processing.
 
-**Current status:** Phases 1 and 2 are accepted, with stable Git tags `phase-1-accepted` and `phase-2-accepted`. Phase 3 — ECG Visualization is implemented and waiting for human acceptance. A valid local CSV displays a waveform from the validated in-memory arrays, plus the existing success message and sample count. X represents time (s); Y represents voltage (mV). A new selection clears the old plot, a valid replacement draws a new plot, and rejected files leave no waveform. Signal metrics are not implemented; Phase 4 has not started. The Git remote `origin` is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`.
+**Current status:** Phases 1 and 2 are accepted, with stable Git tags `phase-1-accepted` and `phase-2-accepted`. Phase 3 — ECG Visualization is Accepted following human review on 2026-09-25, with stable checkpoint tag `phase-3-accepted`. A valid local CSV displays a waveform from the validated in-memory arrays, plus the existing success message and sample count. X represents time (s); Y represents voltage (mV). A new selection clears the old plot, a valid replacement draws a new plot, and rejected files leave no waveform. Signal metrics are not implemented; Phase 4 has not started. The Git remote `origin` is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`.
 
 **Run now:** Open `src/index.html` in a current browser. On this Mac, from the project directory, run `open src/index.html`. No installation, server, build step, or internet connection is required. Select a CSV using the file input; import starts immediately. Only the latest successful import is kept in memory. A new selection clears the previous data and waveform; refreshing clears both. The graph uses automatic axis ranges, so compare axis labels when changing files. On narrow screens, scroll the graph horizontally if needed.
 
@@ -41,11 +41,11 @@ The parser accepts UTF-8 BOM, LF/CRLF/CR line endings, a single terminal line en
 
 With Node.js available, run `node --test tests/*.test.cjs` from the project directory. The tests use only Node built-ins; Node is not required to use the page. The application tests simulate the small DOM interface to verify import and waveform state; waveform tests check SVG sample coordinates and axis labels. These tests do not exercise browser rendering or the native file picker.
 
-On 2026-09-25, all 31 tests passed, including the original 23 Phase 2 tests. Standalone SVGs for `valid.csv`, `second-valid.csv`, and a constant signal were rasterized and visually inspected. The browser tool previously blocked the local `file://` workflow in this session; no repeat attempt or bypass was made in Phase 3. Native browser appearance, file selection, and refresh remain part of Phase 3 Human Acceptance.
+On 2026-09-25, all 31 tests passed, including the original 23 Phase 2 tests. Standalone SVGs for `valid.csv`, `second-valid.csv`, and a constant signal were rasterized and visually inspected. The browser tool previously blocked the local `file://` workflow in this session; no repeat attempt or bypass was made in Phase 3. The student subsequently completed and passed Phase 3 Human Acceptance, including rendering, import transitions, refresh, and all seven Phase 2 cases.
 
 ## Phase 3 Human Acceptance
 
-Status: waiting for human acceptance. All sample files are under `tests/fixtures/` and contain synthetic test values, not clinical recordings.
+Completed and passed on 2026-09-25: the student verified correct rendering, replacement, clearing on invalid import, restoration on valid import, refresh reset of the waveform and sample count, and all seven Phase 2 CSV cases. The checklist below is retained for future regression checks. All sample files are under `tests/fixtures/` and contain synthetic test values, not clinical recordings.
 
 1. Open `src/index.html` (or refresh an already open copy). Expect “No file imported.”, no sample count, and no waveform.
 2. Import `valid.csv`. Expect success, 4 samples, and one waveform labeled **Time (s)** horizontally and **Voltage (mV)** vertically. Confirm the line connects these points in order:

@@ -2,7 +2,7 @@
 
 Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and obtain student acceptance before entering the next phase. A Git checkpoint should capture each accepted phase. This plan describes future work; it does not mark those phases complete.
 
-**Current status:** Phases 1 and 2 are Accepted, preserved at Git tags `phase-1-accepted` and `phase-2-accepted`. Phase 3 — ECG Visualization is implemented and waiting for human acceptance as of 2026-09-25. Phases 4–6 have not started and must not start automatically.
+**Current status:** Phases 1 and 2 are Accepted, preserved at Git tags `phase-1-accepted` and `phase-2-accepted`. Phase 3 — ECG Visualization is Accepted following human review on 2026-09-25, with stable checkpoint tag `phase-3-accepted`. Phases 4–6 have not started and must not start automatically.
 
 **Confirmed boundaries:** HTML, CSS, and Vanilla JavaScript in the browser; ECG files stay local and are never uploaded. No React, Vue, Next.js, backend, database, login, diagnosis, arrhythmia classification, AI analysis, other signal types, or complex signal processing. The personal repository remote is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`. Maintain all three logs and Git checkpoints across future iterations. `PROJECT_SCOPE.md` defines the CSV and output contract.
 
@@ -28,13 +28,13 @@ Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and
 
 ## Phase 3 — ECG Visualization
 
-- **Status:** Implemented; waiting for human acceptance. All 31 tests pass, including the existing Phase 2 tests. Standalone SVG renders were visually inspected; browser rendering and native file selection require the manual checks in `README.md`.
+- **Status:** Accepted by the student on 2026-09-25. Manual checks passed for rendering, waveform replacement, invalid-import clearing, valid-import restoration, refresh reset, and all seven Phase 2 CSV cases. The implementation also has 31 previously passing automated tests. See `DEV_LOG.md` for the acceptance record.
 - **Goal:** Show voltage over time as an ECG waveform.
 - **Tasks:** Draw a native SVG waveform from Phase 2's validated in-memory arrays; label time (s) and voltage (mV) axes. Replace the plot on another valid import and clear it on any new selection or failed import. Refresh returns to an empty page state. Preserve all CSV validation behavior.
 - **Acceptance Criteria:** `valid.csv` displays a waveform at the correct time/voltage positions. A second valid CSV updates the line and axes. Valid → invalid removes the old waveform; invalid → valid restores it. Refresh shows no waveform. Existing Phase 2 tests continue to pass. No signal metrics or analysis are added.
 - **How AI will test it:** Run the entire test suite; check coordinate mapping, actual time spacing, constant-voltage rendering, and replacement/clearing state. Inspect standalone SVG renders and report the known browser-tool limitation honestly.
 - **How the student will check it:** Follow the Phase 3 steps in `README.md`, compare the four points in `valid.csv` with the plot, check `second-valid.csv`, test valid/invalid transitions, and refresh. A representative class ECG CSV can be checked too if available.
-- **Exit condition:** Visualization evidence and an implementation checkpoint are recorded. Explicit human acceptance is still pending. Do not begin Phase 4 without acceptance and a separate instruction.
+- **Exit condition:** Met: visualization evidence, tests, and explicit human acceptance are recorded. The accepted state is preserved at annotated Git tag `phase-3-accepted`. Phase 4 requires a separate instruction and has not started.
 
 ## Phase 4 — Basic Signal Information
 

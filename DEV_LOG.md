@@ -2,7 +2,7 @@
 
 Add one entry for each meaningful work package. Keep test evidence and human acceptance separate; AI verification does not imply student acceptance.
 
-**Current status:** Phases 1 and 2 are Accepted, preserved at Git tags `phase-1-accepted` and `phase-2-accepted`. Phase 3 — ECG Visualization is implemented and waiting for human acceptance as of 2026-09-25. Phase 4 has not started. Earlier entries describe the state at their checkpoints; the latest entry records the current acceptance and decisions.
+**Current status:** Phases 1 and 2 are Accepted, preserved at Git tags `phase-1-accepted` and `phase-2-accepted`. Phase 3 — ECG Visualization is Accepted following human review on 2026-09-25, with stable checkpoint tag `phase-3-accepted`. Phase 4 has not started. Earlier entries describe the state at their checkpoints; the latest entry records the current acceptance and decisions.
 
 ## Entry template
 
@@ -278,3 +278,44 @@ Phase 3 — ECG Visualization; waiting for human acceptance.
 ### Next step
 
 - Stop after the local implementation checkpoint and handoff. Await explicit Phase 3 acceptance; do not start Phase 4.
+
+---
+
+## 2026-09-25 — Phase 3: Human acceptance and closure
+
+### Date
+
+2026-09-25
+
+### Phase
+
+Phase 3 — ECG Visualization: Accepted.
+
+### What was completed
+
+- Recorded the student's completed manual review and explicit Phase 3 acceptance in `PLAN.md` and this log; synchronized the acceptance status in `README.md`.
+- Preserved the accepted state with commit message `docs: record Phase 3 human acceptance` and annotated tag `phase-3-accepted`. This checkpoint includes implementation commit `e67d50e` without changing business functionality.
+- The closure publishes `main` and `phase-3-accepted` to `origin` at `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`; verify both remote refs against the local checkpoint after pushing.
+
+### Problems
+
+- None reported during human acceptance. The earlier browser-tool restriction remains a historical testing limitation; the student has now completed the Phase 3 browser checks.
+
+### Testing
+
+- Human-reported result: `valid.csv` renders correctly.
+- Human-reported result: `second-valid.csv` replaces the old waveform.
+- Human-reported result: an invalid import clears the previous waveform.
+- Human-reported result: a subsequent valid import restores the waveform.
+- Human-reported result: refreshing resets both the waveform and sample count.
+- Human-reported result: all seven Phase 2 CSV cases still behave correctly — `valid.csv`, `wrong-headers.csv`, `non-numeric.csv`, `too-few-rows.csv`, `non-increasing.csv`, `exactly-five-percent.csv`, and `over-five-percent.csv`.
+- Reviewed the documentation diff and checked whitespace. No application tests were rerun because this closure changes documentation only; the prior 31-test result is recorded above. Source and test files remain identical to implementation commit `e67d50e`.
+
+### Human acceptance
+
+- Phase 3 passed human acceptance on 2026-09-25. The student explicitly stated: “Phase 3 has passed human acceptance.”
+- Acceptance covers waveform rendering, replacement and clearing, recovery, refresh reset, and the Phase 2 validation regression checks.
+
+### Next step
+
+- Stop after publishing and verifying the accepted checkpoint. Phase 4 has not started; wait for a separate instruction before any new feature work.
