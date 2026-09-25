@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BioSignal Explorer — CSV Import</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="csv.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <h1>BioSignal Explorer</h1>
+      <h2>Import an ECG CSV</h2>
+      <p>Your file is read only in this browser. It is never uploaded.</p>
+      <div id="csv-rules">
+        <p>Use the exact header <code>time,voltage</code>.</p>
+        <ul>
+          <li>Time in seconds (s); voltage in millivolts (mV).</li>
+          <li>At least 3 data rows, with a number in both columns.</li>
+          <li>Time must increase on every row.</li>
+          <li>Every time interval must be within 5% of the mean interval.</li>
+        </ul>
+      </div>
+      <label for="csv-file">Choose a CSV file</label>
+      <input id="csv-file" type="file" accept=".csv,text/csv" aria-describedby="csv-rules">
+      <p id="import-status" role="status" aria-live="polite" aria-atomic="true">No file imported.</p>
+      <p id="sample-count" hidden></p>
+    </main>
+  </body>
+</html>

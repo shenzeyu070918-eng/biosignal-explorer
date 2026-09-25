@@ -2,7 +2,7 @@
 
 Add one entry for each meaningful work package. Keep test evidence and human acceptance separate; AI verification does not imply student acceptance.
 
-**Current status:** Phase 1 — Accepted by the student on 2026-09-24 after human review. Stable local checkpoint: Git tag `phase-1-accepted`. Phase 2 has not started. Earlier entries describe the state at their checkpoints; the latest entry records the current acceptance and decisions.
+**Current status:** Phase 1 — Accepted, preserved at Git tag `phase-1-accepted`. Phase 2 — CSV Import is implemented and waiting for human acceptance as of 2026-09-25. Phase 3 has not started. Earlier entries describe the state at their checkpoints; the latest entry records the current acceptance and decisions.
 
 ## Entry template
 
@@ -153,3 +153,47 @@ Phase 1 — Project Foundation: Accepted.
 ### Next step
 
 - Stop after the documentation checkpoint. Wait for a separate instruction to begin Phase 2; human acceptance of Phase 1 does not automatically authorize implementation.
+
+---
+
+## 2026-09-25 — Phase 2: CSV Import implementation
+
+### Date
+
+2026-09-25
+
+### Phase
+
+Phase 2 — CSV Import; waiting for human acceptance.
+
+### What was completed
+
+- The student explicitly authorized Phase 2. Inspected the clean working tree and observed the configured personal GitHub `origin` remote.
+- Replaced the empty source placeholder with a minimal HTML/CSS/Vanilla JavaScript importer: file selection, browser-local reading, fixed CSV parsing, all required validations, in-memory arrays, success/error messages, and imported sample count.
+- Added a stale-read guard and cleared previous data/count on every new selection, including failed imports.
+- Added seven synthetic CSV fixtures and two dependency-free automated test files. Added exact Human Acceptance steps and expected results to `README.md`.
+- Packaged the tracked sample files and acceptance instructions into the ignored user-facing `outputs/phase-2-acceptance.zip`; archive integrity was checked.
+- Synchronized scope, plan, README, and current log status; recorded the parser/precision/state decision and the actual browser-tool restriction.
+- No waveform, signal metrics, signal processing, AI, backend, database, or external dependency was added.
+- Local implementation checkpoint uses commit message `feat: implement Phase 2 CSV import and validation`. It is not a Phase 2 acceptance checkpoint; the Phase 1 tag remains unchanged.
+
+### Problems
+
+- The browser tool blocked the local `file://` page before loading it. See `ERROR_LOG.md`. No workaround was attempted; real-browser acceptance remains outstanding.
+
+### Testing
+
+- All 23 automated tests passed, using Node built-ins and the bundled runtime because `node` is not on the shell PATH.
+- Command: `/Users/shenzeyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node --test tests/csv.test.cjs tests/app.test.cjs`.
+- Required cases: valid CSV, wrong headers, nonnumeric values, fewer than 3 rows, non-increasing time, exactly 5% deviation (both directions), and greater than 5% deviation.
+- Additional checks cover a later invalid interval, malformed/empty cells and rows, numeric formats, BOM/line endings, finite interval range, file extension, read failure, replacement/reset, and stale reads.
+- Application tests use a minimal DOM stand-in and assert the actual event handler's in-memory arrays and displayed messages/count. They do not verify native file-picker behavior or rendering.
+- Source review confirms no network calls, external resources, storage, or signal metric display. Git diff checks cover whitespace and intended changes only.
+
+### Human acceptance
+
+- Pending. Phase 2 is waiting for human acceptance, not accepted. The seven files in `tests/fixtures/` and the steps in `README.md` are ready for review.
+
+### Next step
+
+- Stop. Await the student's browser checks and explicit Phase 2 acceptance. Do not begin Phase 3.

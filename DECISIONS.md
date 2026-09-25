@@ -2,6 +2,8 @@
 
 Record each meaningful choice when it is made. Revisit a decision only when new evidence warrants it.
 
+Entries describe their historical checkpoint. Current implementation status is in `PLAN.md` and `DEV_LOG.md`.
+
 ## Decision template
 
 ### Decision
@@ -200,7 +202,33 @@ The user's explanation provides evidence for the learning goal beyond successful
 
 This requires a real target user's participation when Phase 5 is reached. A single user's check is limited evidence, so broader feedback remains planned for Phase 6.
 
-## Deferred implementation details
+## Decision: Small fixed-format parser and page-memory state — 2026-09-25
 
-- Obtain the personal GitHub account handle and remote URL when repository setup is requested.
-- Document exact entry-page instructions when a runnable page exists. No further technical-stack, header, or unit selection is pending for Phase 1.
+### Context
+
+Phase 2 authorizes CSV import and validation only, with no external dependency and a page that opens directly from disk.
+
+### Options considered
+
+- Introduce a general CSV library and a module/build setup.
+- Use plain deferred scripts, a pure fixed-format numeric parser, and a small file-selection handler.
+
+### Final choice
+
+Use `src/index.html`, `styles.css`, `csv.js`, and `app.js`. The parser returns `{ time, voltage }` only after validation succeeds. The event handler keeps this result in the page-level `importedData` variable, resets it on a new selection, and ignores stale asynchronous reads. Nothing is persisted or transmitted.
+
+Require a `.csv` extension, case-insensitive, without depending on inconsistent OS MIME labels. Accept UTF-8 BOM, ordinary line endings and one terminal line ending, optional numeric quotes, whitespace around numeric cells, and finite decimal/scientific numbers. Headers remain exactly `time,voltage`. Reject empty cells, blank data rows, non-finite values, wrong column counts, and invalid numeric text without dropping rows. This is a fixed numeric CSV reader, not a general text-field CSV tool.
+
+Compare each normalized interval deviation to `0.05`, with only `8 * Number.EPSILON` added for binary floating-point roundoff. This preserves the inclusive mathematical 5% boundary; a 5.000001% deviation is tested and rejected. Compute the interval mean only for validation; do not calculate or display Sampling Rate or other signal metrics in Phase 2.
+
+### Reason
+
+The pure parser can be checked with Node's built-in tests while the app runs without Node or a server. Separate selection state prevents failed or stale reads from leaving misleading imported data.
+
+### Trade-offs
+
+Files must follow the fixed numeric format and fit in browser memory. Physical units cannot be inferred from numbers, so the page states the required s/mV units. Tests with a simulated DOM verify state and messages but do not substitute for human browser acceptance.
+
+### Follow-up on earlier deferred details
+
+The existing `origin` remote was observed as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git` at the start of Phase 2. The entry-page instructions are now in `README.md`.

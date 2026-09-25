@@ -2,9 +2,9 @@
 
 Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and obtain student acceptance before entering the next phase. A Git checkpoint should capture each accepted phase. This plan describes future work; it does not mark those phases complete.
 
-**Current status:** Phase 1 — Accepted. The student completed human review and accepted Phase 1 — Project Foundation on 2026-09-24. The accepted documentation state is checkpointed by the local Git tag `phase-1-accepted`. Phases 2–6 have not started and must not start automatically.
+**Current status:** Phase 1 — Accepted, preserved at Git tag `phase-1-accepted`. Phase 2 — CSV Import is implemented and waiting for human acceptance as of 2026-09-25. Phases 3–6 have not started and must not start automatically.
 
-**Confirmed boundaries:** HTML, CSS, and Vanilla JavaScript in the browser; ECG files stay local and are never uploaded. No React, Vue, Next.js, backend, database, login, diagnosis, arrhythmia classification, AI analysis, other signal types, or complex signal processing. The public repository is planned as `biosignal-explorer` under the student's personal GitHub account; it is not yet created or connected. Maintain all three logs and Git checkpoints across future iterations. `PROJECT_SCOPE.md` defines the CSV and output contract.
+**Confirmed boundaries:** HTML, CSS, and Vanilla JavaScript in the browser; ECG files stay local and are never uploaded. No React, Vue, Next.js, backend, database, login, diagnosis, arrhythmia classification, AI analysis, other signal types, or complex signal processing. The personal repository remote is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`. Maintain all three logs and Git checkpoints across future iterations. `PROJECT_SCOPE.md` defines the CSV and output contract.
 
 ## Phase 1 — Project Foundation
 
@@ -14,16 +14,17 @@ Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and
 - **Acceptance Criteria:** The documents agree on the confirmed scope and current status; the directory is understandable; Git tracks the project records; the future running method is explained without claiming an existing application. A runnable page and a connected GitHub repository are not gates for this documentation phase.
 - **How AI will test it:** Check required files and sections, review agreement across documents, inspect the Git diff and history, and confirm that no business code or dependencies were introduced.
 - **How the student will check it:** Read the scope and plan, confirm that the structure and technical direction are understandable, and explicitly accept Phase 1.
-- **Exit condition:** Met: explicit human acceptance is recorded in `DEV_LOG.md`, with the accepted state preserved at Git tag `phase-1-accepted`. Phase 2 requires a subsequent instruction to begin.
+- **Exit condition:** Met: explicit human acceptance is recorded in `DEV_LOG.md`, with the accepted state preserved at Git tag `phase-1-accepted`. The student authorized Phase 2 on 2026-09-25.
 
 ## Phase 2 — CSV Import
 
+- **Status:** Implemented; waiting for human acceptance. Automated checks: 23 passing tests. Native browser file selection and visual behavior still require manual review; see `README.md` for steps and seven sample files.
 - **Goal:** Read a fixed-format CSV containing `time` and `voltage`.
 - **Tasks:** Implement local file selection and CSV parsing against the confirmed contract: exact headers `time,voltage`, numeric time in s and voltage in mV in every data row, at least 3 valid data rows, and strictly increasing time. For adjacent intervals `Δt`, require every interval to differ from `mean(Δt)` by no more than 5%, inclusive. Reject rule violations with clear user-facing errors. Sampling Rate will later be calculated in Phase 4 as `1 / mean(Δt)`.
-- **Acceptance Criteria:** A valid CSV loads both columns in order without uploading data. Incorrect headers, nonnumeric values, fewer than 3 valid data rows, duplicate or decreasing time, and any interval beyond the 5% limit cause file rejection with understandable feedback. Invalid rows are not silently discarded. No arbitrary column or unit mapping is offered.
+- **Acceptance Criteria:** A valid CSV loads both columns in order without uploading data, keeps numeric time and voltage arrays in memory, and shows success plus the imported sample count. Incorrect headers, nonnumeric values, fewer than 3 valid data rows, duplicate or decreasing time, and any interval beyond the 5% limit cause file rejection with understandable feedback. Invalid rows are not silently discarded, and failed imports leave no previous data or count displayed. No arbitrary column or unit mapping is offered.
 - **How AI will test it:** Compare a known valid CSV with expected parsed rows; check incorrect headers, nonnumeric values, 2 versus 3 data rows, duplicate/decreasing time, intervals exactly at the inclusive 5% boundary, and an interval beyond it. Inspect the file-reading path for unintended uploads.
-- **How the student will check it:** Import a real class or sample ECG CSV and confirm the values and error messages make sense.
-- **Exit condition:** Parsing behavior and its tests are recorded, the student accepts the result, and a Git checkpoint is made.
+- **How the student will check it:** Follow the exact steps and seven sample cases in `README.md`, check success/error transitions and refresh behavior, then try a class ECG CSV that meets the fixed format if available.
+- **Exit condition:** Parsing behavior and tests are recorded and a local implementation checkpoint is made. Human acceptance is still pending. Record explicit student acceptance before starting Phase 3; do not advance automatically.
 
 ## Phase 3 — ECG Visualization
 

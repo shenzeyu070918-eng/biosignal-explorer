@@ -42,7 +42,7 @@ The intended first user flow is: open the website → import an ECG CSV → read
 - Sampling Rate (Hz): later calculate `1 / mean(Δt)` for a file that passes all CSV validation rules, including the minimum of 3 valid data rows and the 5% sampling-uniformity limit.
 - Maximum, Minimum, and Mean (mV): respectively the maximum, minimum, and arithmetic mean of the voltage values.
 
-These are documented requirements for future implementation. The MVP does not include resampling or correction of irregular data.
+The waveform and five signal metrics remain requirements for later phases. Phase 2 implements only import, validation, and an imported sample count. The MVP does not include resampling or correction of irregular data.
 
 ## Non-goals for the current MVP
 
@@ -58,14 +58,14 @@ These are documented requirements for future implementation. The MVP does not in
 - Finish and accept one clearly scoped phase before starting the next.
 - Record meaningful work, decisions, errors, tests, and human acceptance.
 - Maintain `DEV_LOG.md`, `DECISIONS.md`, `ERROR_LOG.md`, and Git checkpoints throughout development.
-- The planned GitHub repository is `biosignal-explorer`, public, under the owner's personal GitHub account. Its creation and connection are not part of this documentation update; only local Git exists currently.
+- The project uses the personal repository `biosignal-explorer`, planned as public. Local Git remote `origin` is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`.
 - Do not add features outside the current MVP without an explicit scope decision.
 
 ## Technical direction
 
 The confirmed approach is a browser-based web application built with HTML, CSS, and Vanilla JavaScript. Do not use React, Vue, Next.js, a backend, or a database in the MVP. All ECG files are read and processed locally in the browser and are never uploaded to a server.
 
-The intended running method is to open the future static HTML entry page in a browser, without a framework or build step. No runnable page exists yet. Keep the code structure simple and introduce separation only when actual implementation needs it; do not build abstractions for hypothetical future signals or features.
+Open `src/index.html` directly in a browser, without a framework, build step, or server. Phase 2 provides a runnable import page. Keep the code structure simple and introduce separation only when actual implementation needs it; do not build abstractions for hypothetical future signals or features.
 
 ## Success criteria
 
