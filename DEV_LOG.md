@@ -2,7 +2,7 @@
 
 Add one entry for each meaningful work package. Keep test evidence and human acceptance separate; AI verification does not imply student acceptance.
 
-**Current status:** Phase 1 — Accepted, preserved at Git tag `phase-1-accepted`. Phase 2 — CSV Import is Accepted following human review on 2026-09-25, with stable checkpoint tag `phase-2-accepted`. Phase 3 has not started. Earlier entries describe the state at their checkpoints; the latest entry records the current acceptance and decisions.
+**Current status:** Phases 1 and 2 are Accepted, preserved at Git tags `phase-1-accepted` and `phase-2-accepted`. Phase 3 — ECG Visualization is implemented and waiting for human acceptance as of 2026-09-25. Phase 4 has not started. Earlier entries describe the state at their checkpoints; the latest entry records the current acceptance and decisions.
 
 ## Entry template
 
@@ -235,3 +235,46 @@ Phase 2 — CSV Import: Accepted.
 ### Next step
 
 - Stop after publishing and verifying the accepted checkpoint. Phase 3 and ECG visualization have not started; wait for a separate instruction before new feature work.
+
+---
+
+## 2026-09-25 — Phase 3: ECG Visualization implementation
+
+### Date
+
+2026-09-25
+
+### Phase
+
+Phase 3 — ECG Visualization; waiting for human acceptance.
+
+### What was completed
+
+- Inspected the clean repository at accepted Phase 2 commit `e4b8623` after the student explicitly authorized Phase 3.
+- Added a dependency-free SVG waveform renderer and a hidden plot section below the existing import result. X-axis is time (s); Y-axis is voltage (mV). Every validated sample is connected in order using the existing in-memory arrays.
+- Connected plot creation to successful imports and immediate clearing to new selections. Invalid imports, file-read failures, cleared selections, and refresh leave no previous waveform. Existing stale-read protection also protects the graph.
+- Added `second-valid.csv`, renderer tests, and focused state assertions to the existing application tests. Added exact Phase 3 Human Acceptance steps to `README.md`.
+- Packaged the instructions and all eight CSV fixtures into the ignored handoff artifact `outputs/phase-3-acceptance.zip`; archive integrity was checked.
+- Updated the plan, scope, README, and decision log to match the implemented visualization and pending human acceptance.
+- The CSV parser and its test file are unchanged. No signal metrics, processing, AI, backend, external application dependency, or other signal type was added.
+- Local implementation checkpoint uses commit message `feat: add Phase 3 ECG waveform visualization`. This is not a Phase 3 acceptance tag; earlier accepted tags remain unchanged.
+
+### Problems
+
+- No new implementation errors occurred. The known browser-tool restriction on local `file://` pages from Phase 2 was respected; no repeat attempt or bypass was made. `ERROR_LOG.md` remains unchanged.
+
+### Testing
+
+- Ran `/Users/shenzeyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node --test tests/*.test.cjs`: all 31 tests passed, including every original Phase 2 test.
+- Checked independent expected coordinates for `valid.csv` and `second-valid.csv`, actual time spacing for the 5% boundary fixture, labeled axes, constant signals, wide finite numeric ranges, and unchanged input arrays.
+- Verified valid → valid replacement, valid → invalid removal, invalid → valid restoration, immediate clearing during a pending read, stale reads, file-read errors, and fresh-page empty state with the actual event handler and a DOM stand-in.
+- Used the preinstalled Sharp utility only for test-time rasterization of generated SVGs; visually inspected both valid fixtures and a flat signal. It is not a project dependency. This checks standalone SVG appearance, not the browser page or native file picker.
+- Compared `src/csv.js` and `tests/csv.test.cjs` with `phase-2-accepted`; both are unchanged. Reviewed the source for local-only rendering and the diff for whitespace and scope.
+
+### Human acceptance
+
+- Pending. Phase 3 is waiting for human acceptance. Native browser rendering, replacement behavior, and refresh must be reviewed with the Phase 3 checklist in `README.md`.
+
+### Next step
+
+- Stop after the local implementation checkpoint and handoff. Await explicit Phase 3 acceptance; do not start Phase 4.

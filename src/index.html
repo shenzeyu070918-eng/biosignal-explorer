@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BioSignal Explorer — CSV Import</title>
+    <title>BioSignal Explorer — ECG Waveform</title>
     <link rel="stylesheet" href="styles.css">
     <script src="csv.js" defer></script>
+    <script src="waveform.js" defer></script>
     <script src="app.js" defer></script>
   </head>
   <body>
@@ -26,6 +27,11 @@
       <input id="csv-file" type="file" accept=".csv,text/csv" aria-describedby="csv-rules">
       <p id="import-status" role="status" aria-live="polite" aria-atomic="true">No file imported.</p>
       <p id="sample-count" hidden></p>
+      <section id="waveform" aria-labelledby="waveform-heading" hidden>
+        <h2 id="waveform-heading">ECG waveform</h2>
+        <div id="waveform-plot"></div>
+        <p class="waveform-note">The line connects the imported samples. Axes adjust to each file.</p>
+      </section>
     </main>
   </body>
 </html>

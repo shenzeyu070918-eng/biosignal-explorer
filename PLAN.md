@@ -2,7 +2,7 @@
 
 Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and obtain student acceptance before entering the next phase. A Git checkpoint should capture each accepted phase. This plan describes future work; it does not mark those phases complete.
 
-**Current status:** Phase 1 — Accepted, preserved at Git tag `phase-1-accepted`. Phase 2 — CSV Import is Accepted following human review on 2026-09-25, with stable checkpoint tag `phase-2-accepted`. Phases 3–6 have not started and must not start automatically.
+**Current status:** Phases 1 and 2 are Accepted, preserved at Git tags `phase-1-accepted` and `phase-2-accepted`. Phase 3 — ECG Visualization is implemented and waiting for human acceptance as of 2026-09-25. Phases 4–6 have not started and must not start automatically.
 
 **Confirmed boundaries:** HTML, CSS, and Vanilla JavaScript in the browser; ECG files stay local and are never uploaded. No React, Vue, Next.js, backend, database, login, diagnosis, arrhythmia classification, AI analysis, other signal types, or complex signal processing. The personal repository remote is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`. Maintain all three logs and Git checkpoints across future iterations. `PROJECT_SCOPE.md` defines the CSV and output contract.
 
@@ -24,16 +24,17 @@ Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and
 - **Acceptance Criteria:** A valid CSV loads both columns in order without uploading data, keeps numeric time and voltage arrays in memory, and shows success plus the imported sample count. Incorrect headers, nonnumeric values, fewer than 3 valid data rows, duplicate or decreasing time, and any interval beyond the 5% limit cause file rejection with understandable feedback. Invalid rows are not silently discarded, and failed imports leave no previous data or count displayed. No arbitrary column or unit mapping is offered.
 - **How AI will test it:** Compare a known valid CSV with expected parsed rows; check incorrect headers, nonnumeric values, 2 versus 3 data rows, duplicate/decreasing time, intervals exactly at the inclusive 5% boundary, and an interval beyond it. Inspect the file-reading path for unintended uploads.
 - **How the student will check it:** Follow the exact steps and seven sample cases in `README.md`, check success/error transitions and refresh behavior, then try a class ECG CSV that meets the fixed format if available.
-- **Exit condition:** Met: parsing behavior, tests, and explicit human acceptance are recorded. The accepted state is preserved at annotated Git tag `phase-2-accepted`. Phase 3 requires a separate instruction and has not started.
+- **Exit condition:** Met: parsing behavior, tests, and explicit human acceptance are recorded. The accepted state is preserved at annotated Git tag `phase-2-accepted`. The student subsequently authorized Phase 3 on 2026-09-25.
 
 ## Phase 3 — ECG Visualization
 
+- **Status:** Implemented; waiting for human acceptance. All 31 tests pass, including the existing Phase 2 tests. Standalone SVG renders were visually inspected; browser rendering and native file selection require the manual checks in `README.md`.
 - **Goal:** Show voltage over time as an ECG waveform.
-- **Tasks:** Draw the waveform from successfully imported data; label time (s) and voltage (mV) axes; keep the presentation readable for a beginner.
-- **Acceptance Criteria:** The plot reflects the CSV row order and values, axes are understandable, and a typical ECG file is clearly visible.
-- **How AI will test it:** Check plotted coordinates or rendered output against a known tiny dataset and inspect visual behavior with a representative ECG CSV.
-- **How the student will check it:** Compare the plot with the source data and confirm the relationship between rows and waveform is clear.
-- **Exit condition:** Visualization evidence and student acceptance are recorded, followed by a Git checkpoint.
+- **Tasks:** Draw a native SVG waveform from Phase 2's validated in-memory arrays; label time (s) and voltage (mV) axes. Replace the plot on another valid import and clear it on any new selection or failed import. Refresh returns to an empty page state. Preserve all CSV validation behavior.
+- **Acceptance Criteria:** `valid.csv` displays a waveform at the correct time/voltage positions. A second valid CSV updates the line and axes. Valid → invalid removes the old waveform; invalid → valid restores it. Refresh shows no waveform. Existing Phase 2 tests continue to pass. No signal metrics or analysis are added.
+- **How AI will test it:** Run the entire test suite; check coordinate mapping, actual time spacing, constant-voltage rendering, and replacement/clearing state. Inspect standalone SVG renders and report the known browser-tool limitation honestly.
+- **How the student will check it:** Follow the Phase 3 steps in `README.md`, compare the four points in `valid.csv` with the plot, check `second-valid.csv`, test valid/invalid transitions, and refresh. A representative class ECG CSV can be checked too if available.
+- **Exit condition:** Visualization evidence and an implementation checkpoint are recorded. Explicit human acceptance is still pending. Do not begin Phase 4 without acceptance and a separate instruction.
 
 ## Phase 4 — Basic Signal Information
 

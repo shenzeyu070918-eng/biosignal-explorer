@@ -232,3 +232,29 @@ Files must follow the fixed numeric format and fit in browser memory. Physical u
 ### Follow-up on earlier deferred details
 
 The existing `origin` remote was observed as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git` at the start of Phase 2. The entry-page instructions are now in `README.md`.
+
+## Decision: Native SVG waveform using validated arrays — 2026-09-25
+
+### Context
+
+Phase 3 authorizes only a waveform, labeled axes, and correct replacement/clearing behavior. Phase 2 validation must remain unchanged.
+
+### Options considered
+
+- A chart library, introducing a dependency and extra configuration.
+- Canvas, requiring drawing-state and resize handling.
+- Native SVG, with one polyline and simple axis/grid elements.
+
+### Final choice
+
+Add `waveform.js` to turn the already validated `importedData` arrays into native SVG. Plot every sample at its actual time and voltage with straight connecting segments. Use automatic axis ranges and numeric ticks labeled Time (s) and Voltage (mV). A constant-voltage signal is centered vertically with its actual voltage as the single Y-axis tick. Internal bounds serve only to map data to plot coordinates; no signal statistics are presented.
+
+Clear the SVG and hide its section immediately on each new selection. Show a new plot only after parsing and validation succeed, using the existing stale-read guard. Reloading starts with an empty hidden section. Keep the existing parser untouched.
+
+### Reason
+
+SVG stays dependency-free, scales with the page, and produces inspectable coordinates for focused tests. It adds one small renderer without restructuring the import flow.
+
+### Trade-offs
+
+The whole file is displayed without zoom, downsampling, filtering, smoothing, or analysis. Long dense recordings may appear crowded. Axis ranges change per file, as explained beside the plot. Small screens may scroll the plot horizontally to preserve label readability. Native browser behavior still requires human acceptance; unit tests and standalone raster inspection do not replace it.

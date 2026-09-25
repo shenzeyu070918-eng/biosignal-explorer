@@ -6,6 +6,13 @@ let importRequest = 0;
 const fileInput = document.getElementById("csv-file");
 const importStatus = document.getElementById("import-status");
 const sampleCount = document.getElementById("sample-count");
+const waveform = document.getElementById("waveform");
+const waveformPlot = document.getElementById("waveform-plot");
+
+function clearWaveform() {
+  waveform.hidden = true;
+  waveformPlot.innerHTML = "";
+}
 
 function showStatus(message, state) {
   importStatus.textContent = message;
@@ -18,6 +25,7 @@ fileInput.addEventListener("change", async () => {
   importedData = null;
   sampleCount.hidden = true;
   sampleCount.textContent = "";
+  clearWaveform();
 
   if (!file) {
     showStatus("No file imported.", "idle");
@@ -43,10 +51,14 @@ fileInput.addEventListener("change", async () => {
 
   try {
     importedData = parseEcgCsv(text);
+    waveformPlot.innerHTML = createWaveformSvg(importedData);
+    waveform.hidden = false;
     showStatus(`Successfully imported ${file.name}.`, "success");
     sampleCount.textContent = `Imported samples: ${importedData.time.length}`;
     sampleCount.hidden = false;
   } catch (error) {
+    importedData = null;
+    clearWaveform();
     showStatus(`Import rejected: ${error.message}`, "error");
   }
 });

@@ -38,6 +38,10 @@ input:focus-visible { outline: 3px solid #226a83; outline-offset: 4px; }
 #import-status[data-state="success"] { color: #19623e; }
 #import-status[data-state="error"] { color: #a12727; }
 #sample-count { margin-top: 8px; font-weight: 600; }
+#waveform { margin-top: 24px; }
+#waveform-plot { overflow-x: auto; }
+#waveform-plot svg { display: block; width: 100%; min-width: 480px; height: auto; }
+.waveform-note { font-size: 0.875rem; color: #435666; }
 
 @media (max-width: 480px) {
   body { padding: 12px; }
