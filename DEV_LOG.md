@@ -2,7 +2,7 @@
 
 Add one entry for each meaningful work package. Keep test evidence and human acceptance separate; AI verification does not imply student acceptance.
 
-**Current status:** Phases 1 and 2 are Accepted, preserved at Git tags `phase-1-accepted` and `phase-2-accepted`. Phase 3 — ECG Visualization is Accepted following human review on 2026-09-25, with stable checkpoint tag `phase-3-accepted`. Phase 4 has not started. Earlier entries describe the state at their checkpoints; the latest entry records the current acceptance and decisions.
+**Current status:** Phases 1–3 are Accepted, preserved at Git tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is implemented and waiting for human acceptance. Phase 5 has not started. Earlier entries describe their historical checkpoints; the latest entry records the current work and acceptance status.
 
 ## Entry template
 
@@ -319,3 +319,47 @@ Phase 3 — ECG Visualization: Accepted.
 ### Next step
 
 - Stop after publishing and verifying the accepted checkpoint. Phase 4 has not started; wait for a separate instruction before any new feature work.
+
+
+---
+
+## 2026-09-25 — Phase 4: Basic Signal Information implementation
+
+### Date
+
+2026-09-25
+
+### Phase
+
+Phase 4 — Basic Signal Information; waiting for human acceptance.
+
+### What was completed
+
+- Inspected the clean accepted Phase 3 state at `623d069` after the student explicitly authorized Phase 4.
+- Added a small calculation/formatting file for Duration (last minus first time), Sampling Rate (reciprocal of mean adjacent interval), and voltage Maximum, Minimum, and arithmetic Mean. Calculations retain JavaScript numeric precision; display uses up to six significant digits and s/Hz/mV units.
+- Added a hidden metrics section below the existing waveform with five labels and short explanations. It uses the validated in-memory arrays and updates on successful imports. New selections, rejections, and read failures clear the previous values along with the waveform. Fresh page state contains no metrics.
+- Added focused calculation tests and extended existing application state tests. Preserved the CSV parser, waveform renderer, existing fixtures, and their unit tests.
+- Updated scope, plan, README, and decision records. The README includes exact Human Acceptance steps, expected values for both valid fixtures and the 5% boundary case, and independent calculations.
+- Packaged the acceptance checklist and eight existing CSV fixtures into ignored `outputs/phase-4-acceptance.zip`; checked archive integrity.
+- Local implementation checkpoint uses commit message `feat: add Phase 4 basic signal information`. This is not an accepted-phase checkpoint; no Phase 4 acceptance tag or push is performed.
+- No Phase 5 work, other metrics, signal processing, interpretation, AI, backend, storage, or external dependency was added.
+
+### Problems
+
+- No new error incident occurred; `ERROR_LOG.md` remains unchanged. The earlier browser-tool restriction on local pages was respected, with no repeat attempt or bypass.
+
+### Testing
+
+- Ran `/Users/shenzeyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node --test tests/*.test.cjs`: all 39 tests passed, including all 31 existing Phase 2/3 tests.
+- Verified all five known results for `valid.csv` and `second-valid.csv`, including a nonzero time origin. Checked mean-interval rate on the inclusive 5% boundary, negative/flat voltage, unchanged input arrays, display-only rounding, and numeric-range handling.
+- Exercised the real import handler using a minimal DOM stand-in: valid replacement, all five invalid fixtures clearing old results, restoration, a changed sampling rate, pending reads, stale read results, file-read failure, wrong extension, empty selection, and initial hidden/empty markup.
+- Reviewed the source and Git diff for local-only processing, unchanged parser/waveform behavior, scope, and whitespace errors.
+- These are unit/state and markup checks, not real-browser rendering, native picker, or browser-refresh tests. Those checks remain in the student's Human Acceptance checklist.
+
+### Human acceptance
+
+- Pending. Phase 4 is waiting for human acceptance; automated test success does not imply acceptance.
+
+### Next step
+
+- Stop after the local implementation checkpoint and handoff. Await the student's explicit acceptance of Phase 4. Do not start Phase 5.

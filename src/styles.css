@@ -42,6 +42,12 @@ input:focus-visible { outline: 3px solid #226a83; outline-offset: 4px; }
 #waveform-plot { overflow-x: auto; }
 #waveform-plot svg { display: block; width: 100%; min-width: 480px; height: auto; }
 .waveform-note { font-size: 0.875rem; color: #435666; }
+#signal-info { margin-top: 24px; }
+.metrics { margin: 0; }
+.metrics > div { padding: 10px 0; border-bottom: 1px solid #d8e0e7; }
+.metrics dt { font-weight: 600; }
+.metrics dd { margin: 0; overflow-wrap: anywhere; }
+.metrics .metric-note { font-size: 0.875rem; color: #435666; }
 
 @media (max-width: 480px) {
   body { padding: 12px; }

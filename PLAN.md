@@ -1,8 +1,8 @@
 # BioSignal Explorer — Phased Plan
 
-Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and obtain student acceptance before entering the next phase. A Git checkpoint should capture each accepted phase. This plan describes future work; it does not mark those phases complete.
+Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and obtain student acceptance before entering the next phase. A Git checkpoint should capture each accepted phase. Status entries distinguish accepted work, work awaiting acceptance, and future phases.
 
-**Current status:** Phases 1 and 2 are Accepted, preserved at Git tags `phase-1-accepted` and `phase-2-accepted`. Phase 3 — ECG Visualization is Accepted following human review on 2026-09-25, with stable checkpoint tag `phase-3-accepted`. Phases 4–6 have not started and must not start automatically.
+**Current status:** Phases 1–3 are Accepted, preserved at annotated tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is implemented and waiting for human acceptance. Phases 5–6 have not started and must not start automatically.
 
 **Confirmed boundaries:** HTML, CSS, and Vanilla JavaScript in the browser; ECG files stay local and are never uploaded. No React, Vue, Next.js, backend, database, login, diagnosis, arrhythmia classification, AI analysis, other signal types, or complex signal processing. The personal repository remote is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`. Maintain all three logs and Git checkpoints across future iterations. `PROJECT_SCOPE.md` defines the CSV and output contract.
 
@@ -34,16 +34,17 @@ Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and
 - **Acceptance Criteria:** `valid.csv` displays a waveform at the correct time/voltage positions. A second valid CSV updates the line and axes. Valid → invalid removes the old waveform; invalid → valid restores it. Refresh shows no waveform. Existing Phase 2 tests continue to pass. No signal metrics or analysis are added.
 - **How AI will test it:** Run the entire test suite; check coordinate mapping, actual time spacing, constant-voltage rendering, and replacement/clearing state. Inspect standalone SVG renders and report the known browser-tool limitation honestly.
 - **How the student will check it:** Follow the Phase 3 steps in `README.md`, compare the four points in `valid.csv` with the plot, check `second-valid.csv`, test valid/invalid transitions, and refresh. A representative class ECG CSV can be checked too if available.
-- **Exit condition:** Met: visualization evidence, tests, and explicit human acceptance are recorded. The accepted state is preserved at annotated Git tag `phase-3-accepted`. Phase 4 requires a separate instruction and has not started.
+- **Exit condition:** Met: visualization evidence, tests, and explicit human acceptance are recorded. The accepted state is preserved at annotated Git tag `phase-3-accepted`. The student subsequently authorized Phase 4 on 2026-09-25.
 
 ## Phase 4 — Basic Signal Information
 
-- **Goal:** Calculate and show Duration, Sampling Rate, Maximum, Minimum, and Mean.
-- **Tasks:** Apply the definitions in `PROJECT_SCOPE.md`: Duration in s as last minus first time; Sampling Rate in Hz as the reciprocal of the mean adjacent time interval; Maximum, Minimum, and arithmetic Mean of voltage in mV. Display them with short explanations.
-- **Acceptance Criteria:** All five values match hand-calculated results for input that passes the CSV rules. Rejected files do not produce result metrics. Sampling Rate is presented as an estimate for approximately uniformly sampled data meeting the 5% limit.
-- **How AI will test it:** Compare results with independent hand calculations for a small dataset and relevant edge cases.
-- **How the student will check it:** Verify at least one small example manually and confirm the labels and explanations are understandable.
-- **Exit condition:** Calculation evidence and student acceptance are recorded, followed by a Git checkpoint.
+- **Status:** Waiting for human acceptance. Implemented on 2026-09-25; all 39 automated tests pass. Browser acceptance remains pending.
+- **Goal:** Calculate and show Duration, Sampling Rate, Maximum, Minimum, and Mean from validated in-memory ECG data.
+- **Tasks:** Duration in s is last minus first time; Sampling Rate in Hz is `1 / mean(Δt)`; Maximum, Minimum, and arithmetic Mean use voltage values only, in mV. Show short explanations and round only for display. Update all five on a valid replacement. Clear metrics together with the waveform on a new selection or failed import; refresh returns to the initial empty state.
+- **Acceptance Criteria:** Both `valid.csv` and `second-valid.csv` match the expected five values in `README.md`. The rate uses the mean adjacent interval and is labeled as an estimate for approximately uniformly sampled data. Valid → invalid clears results; invalid → valid restores them. Refresh clears waveform, count, and metrics. All existing Phase 2 and Phase 3 tests pass. No interpretation or other feature work is included.
+- **How AI will test it:** Run the full suite, including focused calculation tests for two known datasets, nonzero time origin, negative/constant voltage, the inclusive 5% boundary, display precision, and import state transitions. Report the browser-tool limitation honestly.
+- **How the student will check it:** Follow the Phase 4 checklist and expected-values table in `README.md`, including replacement, rejection, restoration, refresh, and all seven Phase 2 cases.
+- **Exit condition:** Pending explicit human acceptance. Keep a local implementation checkpoint; create an accepted checkpoint only after the student accepts. Phase 5 requires a separate instruction.
 
 ## Phase 5 — UX & Mobile Check
 

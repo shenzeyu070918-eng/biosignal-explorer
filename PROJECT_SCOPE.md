@@ -39,10 +39,10 @@ The intended first user flow is: open the website → import an ECG CSV → read
 
 - ECG waveform: voltage (mV) against time (s).
 - Duration (s): last time value minus first time value.
-- Sampling Rate (Hz): later calculate `1 / mean(Δt)` for a file that passes all CSV validation rules, including the minimum of 3 valid data rows and the 5% sampling-uniformity limit.
+- Sampling Rate (Hz): calculate `1 / mean(Δt)` for a file that passes all CSV validation rules, including the minimum of 3 valid data rows and the 5% sampling-uniformity limit.
 - Maximum, Minimum, and Mean (mV): respectively the maximum, minimum, and arithmetic mean of the voltage values.
 
-Phase 2 provides import, validation, and an imported sample count. Phase 3 adds a waveform using those validated in-memory arrays, with labeled time (s) and voltage (mV) axes. The five signal metrics remain requirements for later phases. The MVP does not include resampling or correction of irregular data.
+Phase 2 provides import, validation, and an imported sample count. Phase 3 adds a waveform using those validated in-memory arrays, with labeled time (s) and voltage (mV) axes. Phase 4 adds the five signal metrics from the same validated arrays and is waiting for human acceptance. Display values use up to six significant digits; calculations retain JavaScript numeric precision. A new selection or failed import clears all previous results, and refresh starts with no results. The MVP does not include resampling or correction of irregular data.
 
 ## Non-goals for the current MVP
 
@@ -65,7 +65,7 @@ Phase 2 provides import, validation, and an imported sample count. Phase 3 adds 
 
 The confirmed approach is a browser-based web application built with HTML, CSS, and Vanilla JavaScript. Do not use React, Vue, Next.js, a backend, or a database in the MVP. All ECG files are read and processed locally in the browser and are never uploaded to a server.
 
-Open `src/index.html` directly in a browser, without a framework, build step, or server. The page provides CSV import and a native SVG waveform. Keep the code structure simple and introduce separation only when actual implementation needs it; do not build abstractions for hypothetical future signals or features.
+Open `src/index.html` directly in a browser, without a framework, build step, or server. The page provides CSV import, a native SVG waveform, and the five basic signal metrics. Keep the code structure simple and introduce separation only when actual implementation needs it; do not build abstractions for hypothetical future signals or features.
 
 ## Success criteria
 

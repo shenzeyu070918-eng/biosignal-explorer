@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="csv.js" defer></script>
     <script src="waveform.js" defer></script>
+    <script src="signal-info.js" defer></script>
     <script src="app.js" defer></script>
   </head>
   <body>
@@ -31,6 +32,36 @@
         <h2 id="waveform-heading">ECG waveform</h2>
         <div id="waveform-plot"></div>
         <p class="waveform-note">The line connects the imported samples. Axes adjust to each file.</p>
+      </section>
+      <section id="signal-info" aria-labelledby="signal-info-heading" hidden>
+        <h2 id="signal-info-heading">Basic signal information</h2>
+        <dl class="metrics">
+          <div>
+            <dt>Duration</dt>
+            <dd id="duration-value"></dd>
+            <dd class="metric-note">Last sample time minus first sample time.</dd>
+          </div>
+          <div>
+            <dt>Sampling Rate</dt>
+            <dd id="samplingRate-value"></dd>
+            <dd class="metric-note">Estimated samples per second: 1 / mean time interval.</dd>
+          </div>
+          <div>
+            <dt>Maximum</dt>
+            <dd id="maximum-value"></dd>
+            <dd class="metric-note">Highest voltage value.</dd>
+          </div>
+          <div>
+            <dt>Minimum</dt>
+            <dd id="minimum-value"></dd>
+            <dd class="metric-note">Lowest voltage value.</dd>
+          </div>
+          <div>
+            <dt>Mean</dt>
+            <dd id="mean-value"></dd>
+            <dd class="metric-note">Arithmetic average of all voltage values.</dd>
+          </div>
+        </dl>
       </section>
     </main>
   </body>

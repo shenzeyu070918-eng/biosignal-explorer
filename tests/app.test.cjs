@@ -14,16 +14,22 @@ function setup() {
     "sample-count": { textContent: "", hidden: true },
     "waveform": { hidden: true },
     "waveform-plot": { innerHTML: "" },
+    "signal-info": { hidden: true },
   };
+  const metricKeys = ["duration", "samplingRate", "maximum", "minimum", "mean"];
+  for (const key of metricKeys) elements[`${key}-value`] = { textContent: "" };
   const context = vm.createContext({ document: { getElementById: (id) => elements[id] } });
   vm.runInContext(readFileSync(join(__dirname, "../src/csv.js"), "utf8"), context);
   vm.runInContext(readFileSync(join(__dirname, "../src/waveform.js"), "utf8"), context);
+  vm.runInContext(readFileSync(join(__dirname, "../src/signal-info.js"), "utf8"), context);
   vm.runInContext(readFileSync(join(__dirname, "../src/app.js"), "utf8"), context);
   return {
     status: elements["import-status"],
     count: elements["sample-count"],
     waveform: elements["waveform"],
     plot: elements["waveform-plot"],
+    signalInfo: elements["signal-info"],
+    metrics: () => metricKeys.map((key) => elements[`${key}-value`].textContent),
     data: () => JSON.parse(vm.runInContext("JSON.stringify(importedData)", context)),
     select(file) {
       elements["csv-file"].files = file ? [file] : [];
@@ -105,6 +111,7 @@ test("a slow earlier read cannot overwrite a newer successful selection", async 
   assert.equal(app.count.textContent, "Imported samples: 3");
   assert.deepEqual(app.data().voltage, [0.1, -0.2, 0.8]);
   assert.equal(app.plot.innerHTML, latestPlot);
+  assert.deepEqual(app.metrics(), ["0.008 s", "250 Hz", "0.8 mV", "-0.2 mV", "0.233333 mV"]);
 });
 
 test("a stale read failure cannot overwrite a newer result", async () => {
@@ -115,6 +122,60 @@ test("a stale read failure cannot overwrite a newer result", async () => {
   failRead(new Error("late failure"));
   await oldImport;
   assert.equal(app.status.dataset.state, "success");
+});
+
+test("metrics match both fixture datasets and recover after every invalid CSV case", async () => {
+  const app = setup();
+  const fixture = (name) => file(readFileSync(join(__dirname, "fixtures", name), "utf8"), name);
+  await app.select(fixture("valid.csv"));
+  assert.equal(app.signalInfo.hidden, false);
+  assert.deepEqual(app.metrics(), ["0.012 s", "250 Hz", "0.8 mV", "-0.2 mV", "0.225 mV"]);
+  await app.select(fixture("second-valid.csv"));
+  assert.deepEqual(app.metrics(), ["0.016 s", "250 Hz", "0.5 mV", "-0.5 mV", "0.1 mV"]);
+  for (const name of ["wrong-headers.csv", "non-numeric.csv", "too-few-rows.csv", "non-increasing.csv", "over-five-percent.csv"]) {
+    await app.select(fixture(name));
+    assert.equal(app.signalInfo.hidden, true);
+    assert.deepEqual(app.metrics(), ["", "", "", "", ""]);
+    assert.equal(app.waveform.hidden, true);
+    assert.equal(app.plot.innerHTML, "");
+    await app.select(fixture("valid.csv"));
+    assert.equal(app.signalInfo.hidden, false);
+    assert.equal(app.waveform.hidden, false);
+    assert.deepEqual(app.metrics(), ["0.012 s", "250 Hz", "0.8 mV", "-0.2 mV", "0.225 mV"]);
+  }
+  await app.select(fixture("exactly-five-percent.csv"));
+  assert.deepEqual(app.metrics(), ["0.008 s", "250 Hz", "0.8 mV", "-0.2 mV", "0.233333 mV"]);
+  await app.select(file("time,voltage\n100,-6\n102,-3\n104,-9"));
+  assert.deepEqual(app.metrics(), ["4 s", "0.5 Hz", "-3 mV", "-9 mV", "-6 mV"]);
+});
+
+test("metrics clear during reads, on read failures, wrong extensions, and empty selections", async () => {
+  const app = setup();
+  for (const next of [undefined, file(valid, "bad.txt"), { name: "bad.csv", text: async () => { throw new Error("read failed"); } }]) {
+    await app.select(file());
+    await app.select(next);
+    assert.equal(app.signalInfo.hidden, true);
+    assert.deepEqual(app.metrics(), ["", "", "", "", ""]);
+  }
+  await app.select(file());
+  let finishRead;
+  const pending = app.select({ name: "pending.csv", text: () => new Promise((resolve) => { finishRead = resolve; }) });
+  assert.equal(app.signalInfo.hidden, true);
+  assert.deepEqual(app.metrics(), ["", "", "", "", ""]);
+  await app.select(file("time,voltage\n0,0\n1,bad\n2,0"));
+  finishRead(valid);
+  await pending;
+  assert.equal(app.signalInfo.hidden, true);
+  assert.deepEqual(app.metrics(), ["", "", "", "", ""]);
+  const freshPage = setup();
+  assert.equal(freshPage.signalInfo.hidden, true);
+  assert.deepEqual(freshPage.metrics(), ["", "", "", "", ""]);
+  // The real HTML must also start hidden; the stand-in alone cannot prove this.
+  const html = readFileSync(join(__dirname, "../src/index.html"), "utf8");
+  assert.match(html, /<section id="signal-info"[^>]* hidden>/);
+  for (const key of ["duration", "samplingRate", "maximum", "minimum", "mean"]) {
+    assert.ok(html.includes(`<dd id="${key}-value"></dd>`));
+  }
 });
 
 test("clearing a selection resets state and a new page starts with no imported data", async () => {

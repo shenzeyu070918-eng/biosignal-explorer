@@ -8,6 +8,19 @@ const importStatus = document.getElementById("import-status");
 const sampleCount = document.getElementById("sample-count");
 const waveform = document.getElementById("waveform");
 const waveformPlot = document.getElementById("waveform-plot");
+const signalInfo = document.getElementById("signal-info");
+const metricFields = [
+  ["duration", "s"],
+  ["samplingRate", "Hz"],
+  ["maximum", "mV"],
+  ["minimum", "mV"],
+  ["mean", "mV"],
+].map(([key, unit]) => ({ key, unit, element: document.getElementById(`${key}-value`) }));
+
+function clearSignalInfo() {
+  signalInfo.hidden = true;
+  for (const { element } of metricFields) element.textContent = "";
+}
 
 function clearWaveform() {
   waveform.hidden = true;
@@ -26,6 +39,7 @@ fileInput.addEventListener("change", async () => {
   sampleCount.hidden = true;
   sampleCount.textContent = "";
   clearWaveform();
+  clearSignalInfo();
 
   if (!file) {
     showStatus("No file imported.", "idle");
@@ -52,6 +66,11 @@ fileInput.addEventListener("change", async () => {
   try {
     importedData = parseEcgCsv(text);
     waveformPlot.innerHTML = createWaveformSvg(importedData);
+    const metrics = calculateSignalInfo(importedData);
+    for (const { key, unit, element } of metricFields) {
+      element.textContent = formatSignalValue(metrics[key], unit);
+    }
+    signalInfo.hidden = false;
     waveform.hidden = false;
     showStatus(`Successfully imported ${file.name}.`, "success");
     sampleCount.textContent = `Imported samples: ${importedData.time.length}`;
@@ -59,6 +78,7 @@ fileInput.addEventListener("change", async () => {
   } catch (error) {
     importedData = null;
     clearWaveform();
+    clearSignalInfo();
     showStatus(`Import rejected: ${error.message}`, "error");
   }
 });

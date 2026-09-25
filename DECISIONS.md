@@ -258,3 +258,30 @@ SVG stays dependency-free, scales with the page, and produces inspectable coordi
 ### Trade-offs
 
 The whole file is displayed without zoom, downsampling, filtering, smoothing, or analysis. Long dense recordings may appear crowded. Axis ranges change per file, as explained beside the plot. Small screens may scroll the plot horizontally to preserve label readability. Native browser behavior still requires human acceptance; unit tests and standalone raster inspection do not replace it.
+
+
+## Decision: Basic metrics from validated arrays, with display-only rounding — 2026-09-25
+
+### Context
+
+Phase 4 requires five calculations using the already validated ECG data, with readable units and correct import/reset behavior. The existing validation and waveform must remain unchanged.
+
+### Options considered
+
+- Calculate and format everything directly in the import handler.
+- Add one small, pure calculation/formatting file that is independently testable, and connect it to the existing handler.
+- Use a statistics or UI dependency.
+
+### Final choice
+
+Add `signal-info.js` with the five formulas and a display formatter. Duration uses last minus first time. Sampling Rate uses the reciprocal of the mean adjacent interval. Maximum, Minimum, and arithmetic Mean use voltage only. A scaled running average avoids overflowing the sum of large finite voltage values; calculations use JavaScript Numbers without deliberate rounding. Format results to at most six significant digits, trim trailing zeros, and append s, Hz, or mV. Non-finite derived results display “Unavailable (numeric range)” without changing the CSV acceptance rules.
+
+Use a plain definition list below the waveform, with a short explanation for each metric. Populate it only after validation succeeds, using the same `importedData` arrays. Clear every value and hide the section on each new selection or rejection. The existing stale-read guard prevents older reads from restoring old metrics.
+
+### Reason
+
+This keeps formulas easy to inspect and test, adds no dependencies, and reuses the established import lifecycle. Significant digits retain readability for both small and large values without making small nonzero signals appear as zero.
+
+### Trade-offs
+
+JavaScript floating-point arithmetic has finite precision and range; “full precision” means no additional internal rounding, not exact real-number arithmetic. Sampling Rate remains an estimate for approximately uniform sampling. No new input rules, statistical analysis, persistence, or interpretation are introduced. Real browser checks remain human acceptance work.
