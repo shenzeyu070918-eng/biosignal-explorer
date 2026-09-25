@@ -6,7 +6,7 @@ BioSignal Explorer is a small learning project for students beginning to study E
 
 The MVP excludes React, Vue, Next.js, a backend, a database, login, diagnosis, arrhythmia classification, AI analysis, EEG/PPG/EMG, and complex signal processing.
 
-**Current status:** Phase 1 is accepted, with stable Git tag `phase-1-accepted`. Phase 2 — CSV Import is implemented and waiting for human acceptance. It reads and validates one local CSV, retains its numeric `time` and `voltage` arrays in page memory, and shows success plus an imported sample count or a specific rejection message. Waveforms and signal metrics are not implemented; Phase 3 has not started. The Git remote `origin` is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`.
+**Current status:** Phase 1 is accepted, with stable Git tag `phase-1-accepted`. Phase 2 — CSV Import is Accepted following human review on 2026-09-25, with stable checkpoint tag `phase-2-accepted`. It reads and validates one local CSV, retains its numeric `time` and `voltage` arrays in page memory, and shows success plus an imported sample count or a specific rejection message. Waveforms and signal metrics are not implemented; Phase 3 has not started. The Git remote `origin` is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`.
 
 **Run now:** Open `src/index.html` in a current browser. On this Mac, from the project directory, run `open src/index.html`. No installation, server, build step, or internet connection is required. Select a CSV using the file input; import starts immediately. Only the latest successful import is kept in memory. A new selection clears the previous data, and refreshing the page clears all imported data.
 
@@ -15,6 +15,8 @@ The MVP excludes React, Vue, Next.js, a backend, a database, login, diagnosis, a
 See `PROJECT_SCOPE.md` for scope and `PLAN.md` for phase gates.
 
 ## Phase 2 Human Acceptance
+
+Completed and passed on 2026-09-25: the student tested all seven CSV files, valid → invalid → valid handling, and refresh reset. The checklist below is retained for reference and future regression checks.
 
 1. Open `src/index.html` and confirm the rules and file selector are visible, with “No file imported.”
 2. Select each sample below from `tests/fixtures/`. All are small synthetic test data, not clinical recordings.
@@ -39,4 +41,4 @@ The parser accepts UTF-8 BOM, LF/CRLF/CR line endings, a single terminal line en
 
 With Node.js available, run `node --test tests/csv.test.cjs tests/app.test.cjs` from the project directory. The tests use only Node built-ins; Node is not required to use the page. The application tests simulate the small DOM interface to verify import state and messages; they do not test actual rendering or the native browser file picker.
 
-On 2026-09-25, all 23 tests passed. The browser tool blocked the local `file://` URL before the app loaded; actual browser appearance and native file selection remain part of the manual acceptance above.
+On 2026-09-25, all 23 tests passed. The browser tool blocked the local `file://` URL before the app loaded; the student subsequently completed and passed the manual acceptance above, including file selection and page reset.

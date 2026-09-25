@@ -2,7 +2,7 @@
 
 Add one entry for each meaningful work package. Keep test evidence and human acceptance separate; AI verification does not imply student acceptance.
 
-**Current status:** Phase 1 — Accepted, preserved at Git tag `phase-1-accepted`. Phase 2 — CSV Import is implemented and waiting for human acceptance as of 2026-09-25. Phase 3 has not started. Earlier entries describe the state at their checkpoints; the latest entry records the current acceptance and decisions.
+**Current status:** Phase 1 — Accepted, preserved at Git tag `phase-1-accepted`. Phase 2 — CSV Import is Accepted following human review on 2026-09-25, with stable checkpoint tag `phase-2-accepted`. Phase 3 has not started. Earlier entries describe the state at their checkpoints; the latest entry records the current acceptance and decisions.
 
 ## Entry template
 
@@ -197,3 +197,41 @@ Phase 2 — CSV Import; waiting for human acceptance.
 ### Next step
 
 - Stop. Await the student's browser checks and explicit Phase 2 acceptance. Do not begin Phase 3.
+
+---
+
+## 2026-09-25 — Phase 2: Human acceptance and closure
+
+### Date
+
+2026-09-25
+
+### Phase
+
+Phase 2 — CSV Import: Accepted.
+
+### What was completed
+
+- Recorded the student's completed manual review and explicit acceptance of Phase 2 in `PLAN.md` and this log; synchronized `README.md` so its current status no longer says acceptance is pending.
+- Preserved the accepted state with commit message `docs: record Phase 2 human acceptance` and annotated tag `phase-2-accepted`. This checkpoint includes the existing implementation commit `e708ce7` without changing its functionality.
+- The closure publishes `main` and `phase-2-accepted` to `origin` at `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`; verify both remote refs against the local checkpoint after pushing.
+
+### Problems
+
+- None reported during human acceptance. The earlier browser-tool restriction remains a historical testing limitation; the student has now completed the manual checks.
+
+### Testing
+
+- Human-reported result: all seven acceptance files passed their expected outcomes — `valid.csv`, `wrong-headers.csv`, `non-numeric.csv`, `too-few-rows.csv`, `non-increasing.csv`, `exactly-five-percent.csv`, and `over-five-percent.csv`.
+- Human-reported result: valid → invalid → valid handling worked, including clearing the old result on rejection and recovering on the next valid import.
+- Human-reported result: refreshing correctly reset the page to its initial state.
+- Reviewed the documentation diff and checked whitespace. No application tests were rerun because this closure changes documentation only; the prior 23-test result is recorded above.
+
+### Human acceptance
+
+- Phase 2 passed human acceptance on 2026-09-25. The student explicitly stated: “Phase 2 has passed human acceptance.”
+- Acceptance includes all seven CSV cases, replacement state handling, and refresh reset.
+
+### Next step
+
+- Stop after publishing and verifying the accepted checkpoint. Phase 3 and ECG visualization have not started; wait for a separate instruction before new feature work.
