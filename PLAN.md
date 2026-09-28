@@ -2,7 +2,7 @@
 
 Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and obtain student acceptance before entering the next phase. A Git checkpoint should capture each accepted phase. Status entries distinguish accepted work, work awaiting acceptance, and future phases.
 
-**Current status:** Phases 1–3 are Accepted, preserved at annotated tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is implemented and waiting for human acceptance. Phases 5–6 have not started and must not start automatically.
+**Current status:** Phases 1–3 are Accepted, preserved at annotated tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is Accepted following human review on 2026-09-28, with stable checkpoint tag `phase-4-accepted`. Phases 5–6 have not started and must not start automatically.
 
 **Confirmed boundaries:** HTML, CSS, and Vanilla JavaScript in the browser; ECG files stay local and are never uploaded. No React, Vue, Next.js, backend, database, login, diagnosis, arrhythmia classification, AI analysis, other signal types, or complex signal processing. The personal repository remote is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`. Maintain all three logs and Git checkpoints across future iterations. `PROJECT_SCOPE.md` defines the CSV and output contract.
 
@@ -38,13 +38,13 @@ Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and
 
 ## Phase 4 — Basic Signal Information
 
-- **Status:** Waiting for human acceptance. Implemented on 2026-09-25; all 39 automated tests pass. Browser acceptance remains pending.
+- **Status:** Accepted by the student on 2026-09-28. Manual checks passed for all three valid fixtures, replacement, clearing, restoration, refresh, and Phase 2 validation. The implementation previously passed all 39 automated tests. See `DEV_LOG.md` for the acceptance record.
 - **Goal:** Calculate and show Duration, Sampling Rate, Maximum, Minimum, and Mean from validated in-memory ECG data.
 - **Tasks:** Duration in s is last minus first time; Sampling Rate in Hz is `1 / mean(Δt)`; Maximum, Minimum, and arithmetic Mean use voltage values only, in mV. Show short explanations and round only for display. Update all five on a valid replacement. Clear metrics together with the waveform on a new selection or failed import; refresh returns to the initial empty state.
 - **Acceptance Criteria:** Both `valid.csv` and `second-valid.csv` match the expected five values in `README.md`. The rate uses the mean adjacent interval and is labeled as an estimate for approximately uniformly sampled data. Valid → invalid clears results; invalid → valid restores them. Refresh clears waveform, count, and metrics. All existing Phase 2 and Phase 3 tests pass. No interpretation or other feature work is included.
 - **How AI will test it:** Run the full suite, including focused calculation tests for two known datasets, nonzero time origin, negative/constant voltage, the inclusive 5% boundary, display precision, and import state transitions. Report the browser-tool limitation honestly.
 - **How the student will check it:** Follow the Phase 4 checklist and expected-values table in `README.md`, including replacement, rejection, restoration, refresh, and all seven Phase 2 cases.
-- **Exit condition:** Pending explicit human acceptance. Keep a local implementation checkpoint; create an accepted checkpoint only after the student accepts. Phase 5 requires a separate instruction.
+- **Exit condition:** Met: calculation evidence and explicit human acceptance are recorded. The accepted state is preserved at annotated Git tag `phase-4-accepted`. Phase 5 has not started and requires a separate instruction.
 
 ## Phase 5 — UX & Mobile Check
 

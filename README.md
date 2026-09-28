@@ -6,7 +6,7 @@ BioSignal Explorer is a small learning project for students beginning to study E
 
 The MVP excludes React, Vue, Next.js, a backend, a database, login, diagnosis, arrhythmia classification, AI analysis, EEG/PPG/EMG, and complex signal processing.
 
-**Current status:** Phases 1–3 are Accepted, with stable Git tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is implemented and **waiting for human acceptance**. Valid imports show the waveform, sample count, and Duration, Sampling Rate, Maximum, Minimum, and Mean. Phases 5–6 have not started. The Git remote `origin` is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`.
+**Current status:** Phases 1–3 are Accepted, with stable Git tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is **Accepted** following human review on 2026-09-28, with stable checkpoint tag `phase-4-accepted`. Valid imports show the waveform, sample count, and Duration, Sampling Rate, Maximum, Minimum, and Mean. Phases 5–6 have not started. The Git remote `origin` is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`.
 
 **Run now:** Open `src/index.html` in a current browser. On this Mac, from the project directory, run `open src/index.html`. No installation, server, build step, or internet connection is required. Select a CSV using the file input; import starts immediately. Only the latest successful import is kept in memory. A new selection clears the previous data, sample count, waveform, and metrics; refreshing clears all results. The graph uses automatic axis ranges, so compare axis labels when changing files. On narrow screens, scroll the graph horizontally if needed.
 
@@ -41,7 +41,7 @@ The parser accepts UTF-8 BOM, LF/CRLF/CR line endings, a single terminal line en
 
 With Node.js available, run `node --test tests/*.test.cjs` from the project directory. The tests use only Node built-ins; Node is not required to use the page. The application tests simulate the small DOM interface to verify import, waveform, and metric state; calculation tests verify the five formulas and display precision; waveform tests check SVG sample coordinates and axis labels. These tests do not exercise browser rendering or the native file picker.
 
-On 2026-09-25, all 39 tests passed, including every existing Phase 2 and Phase 3 test. Phase 3 previously included standalone SVG raster inspection and passed human browser acceptance. The browser tool previously blocked the local `file://` workflow; no repeat attempt or bypass was made in Phase 4. Phase 4's real-browser rendering, native file picker, and refresh behavior remain for human acceptance. Automated fresh-page tests use a new simulated page and inspect the initial HTML; they do not reload a real browser.
+On 2026-09-25, all 39 tests passed, including every existing Phase 2 and Phase 3 test. Phase 3 previously included standalone SVG raster inspection and passed human browser acceptance. The browser tool previously blocked the local `file://` workflow; no repeat attempt or bypass was made in Phase 4. The student subsequently passed Phase 4 human acceptance on 2026-09-28, verifying metric values, import transitions, refresh, and Phase 2 validation behavior. Automated fresh-page tests use a new simulated page and inspect the initial HTML; they do not reload a real browser.
 
 ## Phase 3 Human Acceptance
 
@@ -68,7 +68,7 @@ Completed and passed on 2026-09-25: the student verified correct rendering, repl
 
 ## Phase 4 Human Acceptance
 
-**Pending.** All CSVs below are synthetic test data in `tests/fixtures/`. Open `src/index.html` in your browser; if it is already open, refresh to load this version.
+**Accepted on 2026-09-28.** The student verified all three valid fixtures, waveform/metric updates, clearing, restoration, refresh, and Phase 2 validation behavior. The checklist is retained for regression checks. All CSVs below are synthetic test data in `tests/fixtures/`. Open `src/index.html` in your browser; if it is already open, refresh to load this version.
 
 ### Expected values
 
@@ -94,4 +94,4 @@ Values are displayed with up to six significant digits and units; internal calcu
 6. Recheck the seven Phase 2 CSV cases from the earlier table: `valid.csv` and `exactly-five-percent.csv` succeed and show the expected metrics above; `wrong-headers.csv`, `non-numeric.csv`, `too-few-rows.csv`, `non-increasing.csv`, and `over-five-percent.csv` are rejected with the listed reason and no old results. Import a valid file before each invalid file to check clearing.
 7. Refresh after a valid import. Confirm the initial message returns and waveform, count, and metrics disappear.
 8. Confirm that labels/explanations are readable and that no heart-rate, R-peak, filtering, interpretation, classification, or AI features appear.
-9. Report acceptance or the exact failing file, step, and displayed values. Phase 4 remains pending until you explicitly accept it; Phase 5 will not start automatically.
+9. Report acceptance or the exact failing file, step, and displayed values. Phase 4 has passed human acceptance; Phase 5 has not started and requires a separate instruction.

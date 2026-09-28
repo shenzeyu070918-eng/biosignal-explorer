@@ -2,7 +2,7 @@
 
 Add one entry for each meaningful work package. Keep test evidence and human acceptance separate; AI verification does not imply student acceptance.
 
-**Current status:** Phases 1–3 are Accepted, preserved at Git tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is implemented and waiting for human acceptance. Phase 5 has not started. Earlier entries describe their historical checkpoints; the latest entry records the current work and acceptance status.
+**Current status:** Phases 1–3 are Accepted, preserved at Git tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is Accepted following human review on 2026-09-28, with stable checkpoint tag `phase-4-accepted`. Phase 5 has not started. Earlier entries describe their historical checkpoints; the latest entry records the current work and acceptance status.
 
 ## Entry template
 
@@ -363,3 +363,47 @@ Phase 4 — Basic Signal Information; waiting for human acceptance.
 ### Next step
 
 - Stop after the local implementation checkpoint and handoff. Await the student's explicit acceptance of Phase 4. Do not start Phase 5.
+
+
+---
+
+## 2026-09-28 — Phase 4: Human acceptance and closure
+
+### Date
+
+2026-09-28
+
+### Phase
+
+Phase 4 — Basic Signal Information: Accepted.
+
+### What was completed
+
+- Recorded the student's explicit Phase 4 acceptance in `PLAN.md` and this log; synchronized the current status in `README.md` and `PROJECT_SCOPE.md`.
+- Preserved the accepted state with commit message `docs: record Phase 4 human acceptance` and annotated tag `phase-4-accepted`, including implementation commit `92099a1` without changing business functionality.
+- The closure publishes `main` and `phase-4-accepted` to `origin` at `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`; verify both remote refs against the local checkpoint after pushing.
+
+### Problems
+
+- None reported during human acceptance. The earlier browser-tool restriction remains a historical AI testing limitation; the student has now completed the manual Phase 4 checks.
+
+### Testing
+
+- Human-reported result: `valid.csv` metrics are correct.
+- Human-reported result: `second-valid.csv` metrics are correct.
+- Human-reported result: `exactly-five-percent.csv` metrics are correct.
+- Human-reported result: valid → valid updates the waveform and metrics.
+- Human-reported result: valid → invalid clears the waveform, sample count, and metrics.
+- Human-reported result: invalid → valid restores the correct results.
+- Human-reported result: refresh resets the page.
+- Human-reported result: Phase 2 CSV validation behavior still works.
+- Reviewed the documentation diff and checked whitespace. Application tests were not rerun for this documentation-only closure; the implementation's 39 passing tests are recorded above. Source and test files remain identical to implementation commit `92099a1`.
+
+### Human acceptance
+
+- Phase 4 passed human acceptance on 2026-09-28. The student explicitly stated: “Phase 4 has passed human acceptance.”
+- Acceptance covers the three valid datasets, import state transitions, page reset, and CSV validation regression checks.
+
+### Next step
+
+- Stop after publishing and verifying the accepted checkpoint. Phase 5 has not started; wait for a separate instruction before new feature work.
