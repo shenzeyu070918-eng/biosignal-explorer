@@ -8,6 +8,12 @@ const { createWaveformSvg } = require("../src/waveform.js");
 const fixture = (name) => parseEcgCsv(readFileSync(join(__dirname, "fixtures", name), "utf8"));
 const points = (svg) => svg.match(/<polyline points="([^"]+)"/)[1].split(" ").map((pair) => pair.split(",").map(Number));
 
+test("time endpoint labels point inward to keep longer values inside the chart", () => {
+  const svg = createWaveformSvg(fixture("second-valid.csv"));
+  assert.match(svg, /<text x="80" y="282" text-anchor="start">10<\/text>/);
+  assert.match(svg, /<text x="608" y="282" text-anchor="end">10\.016<\/text>/);
+});
+
 test("valid.csv maps time to horizontal position and voltage to upward vertical position", () => {
   const svg = createWaveformSvg(fixture("valid.csv"));
   // Plot edges: x=80..608; y=24..260. Bounds: t=0..0.012, v=-0.2..0.8.

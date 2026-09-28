@@ -2,7 +2,7 @@
 
 Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and obtain student acceptance before entering the next phase. A Git checkpoint should capture each accepted phase. Status entries distinguish accepted work, work awaiting acceptance, and future phases.
 
-**Current status:** Phases 1–3 are Accepted, preserved at annotated tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is Accepted following human review on 2026-09-28, with stable checkpoint tag `phase-4-accepted`. Phases 5–6 have not started and must not start automatically.
+**Current status:** Phases 1–3 are Accepted, preserved at annotated tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is Accepted following human review on 2026-09-28, with stable checkpoint tag `phase-4-accepted`. Phase 5 — UX & Mobile Check is implemented and waiting for human acceptance, including browser checks and target-user feedback. Phase 6 has not started and must not start automatically.
 
 **Confirmed boundaries:** HTML, CSS, and Vanilla JavaScript in the browser; ECG files stay local and are never uploaded. No React, Vue, Next.js, backend, database, login, diagnosis, arrhythmia classification, AI analysis, other signal types, or complex signal processing. The personal repository remote is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`. Maintain all three logs and Git checkpoints across future iterations. `PROJECT_SCOPE.md` defines the CSV and output contract.
 
@@ -44,17 +44,18 @@ Only the current phase may be worked on. Record its evidence in `DEV_LOG.md` and
 - **Acceptance Criteria:** Both `valid.csv` and `second-valid.csv` match the expected five values in `README.md`. The rate uses the mean adjacent interval and is labeled as an estimate for approximately uniformly sampled data. Valid → invalid clears results; invalid → valid restores them. Refresh clears waveform, count, and metrics. All existing Phase 2 and Phase 3 tests pass. No interpretation or other feature work is included.
 - **How AI will test it:** Run the full suite, including focused calculation tests for two known datasets, nonzero time origin, negative/constant voltage, the inclusive 5% boundary, display precision, and import state transitions. Report the browser-tool limitation honestly.
 - **How the student will check it:** Follow the Phase 4 checklist and expected-values table in `README.md`, including replacement, rejection, restoration, refresh, and all seven Phase 2 cases.
-- **Exit condition:** Met: calculation evidence and explicit human acceptance are recorded. The accepted state is preserved at annotated Git tag `phase-4-accepted`. Phase 5 has not started and requires a separate instruction.
+- **Exit condition:** Met: calculation evidence and explicit human acceptance are recorded. The accepted state is preserved at annotated Git tag `phase-4-accepted`. The student subsequently authorized Phase 5 on 2026-09-28.
 
 ## Phase 5 — UX & Mobile Check
 
-- **Goal:** Keep the complete MVP simple and usable on desktop and a mobile screen.
-- **Tasks:** Review the import-to-result flow, plain-language guidance, readability, error states, and basic mobile layout; make only necessary adjustments.
-- **Acceptance Criteria:** A beginner can complete the flow without instructions outside the page; the waveform and metrics remain readable on common desktop and mobile widths. At least one target user demonstrates the understanding described in Human Acceptance below.
-- **How AI will test it:** Inspect the flow and capture desktop/mobile views; check obvious layout overflow and confusing states.
-- **How the student will check it:** Complete the full flow on a laptop and phone, noting any confusing step.
-- **Human Acceptance:** Ask at least one target user to identify how a CSV data point relates to the waveform and explain at least one displayed signal parameter in their own words. Record their responses and any confusion in `DEV_LOG.md` as evidence before accepting Phase 5.
-- **Exit condition:** UX findings and student acceptance are recorded, followed by a Git checkpoint.
+- **Status:** Waiting for human acceptance. UX refinements implemented on 2026-09-28; all 42 automated tests pass. Actual desktop/narrow-browser checks and feedback from at least one target user remain pending.
+- **Goal:** Keep the existing import, feedback, sample count, waveform, and metrics clear and usable on desktop and narrow screens without adding business functionality.
+- **Tasks:** Place upload before detailed rules; strengthen existing success/error presentation; improve metric spacing and responsive columns; enlarge waveform labels and provide a keyboard-focusable chart scroll region with instructions. Check approximately 375px, 430px, and desktop widths. Preserve CSV validation, metric calculations, and import/reset behavior.
+- **Acceptance Criteria:** The student completes valid imports on desktop and mobile/narrow viewport. No important content is cut off or unusable. Errors and metric values remain readable. Horizontal scrolling is confined to the chart when needed, with all samples reachable. Existing tests pass. At least one target user completes the learning check below.
+- **How AI will test it:** Run all tests plus focused markup-accessibility and chart-label checks. Review CSS sizing at 375px, 430px, and desktop width and inspect standalone SVG renders. Due to the previously recorded browser-tool restriction, these are static checks, not real-browser screenshots or interaction tests; browser behavior remains a human gate.
+- **How the student will check it:** Follow the exact Phase 5 desktop and 375px/430px steps in `README.md`, including valid replacement, rejection, restoration, scrolling, keyboard access, and refresh.
+- **Human Acceptance:** Ask at least one target user to identify how one CSV data point relates to the waveform and explain at least one displayed signal parameter in their own words. Record their actual responses, confusion, and suggestions using the Phase 5 feedback template in `DEV_LOG.md`. Record suggestions for review; do not implement them automatically.
+- **Exit condition:** Pending desktop/mobile checks, target-user feedback, and explicit student acceptance. Save a local implementation checkpoint; create an accepted checkpoint only after acceptance. Phase 6 requires a separate instruction and must not start automatically.
 
 ## Phase 6 — Feedback & Iteration
 

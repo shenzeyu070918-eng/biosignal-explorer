@@ -2,7 +2,7 @@
 
 Add one entry for each meaningful work package. Keep test evidence and human acceptance separate; AI verification does not imply student acceptance.
 
-**Current status:** Phases 1–3 are Accepted, preserved at Git tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is Accepted following human review on 2026-09-28, with stable checkpoint tag `phase-4-accepted`. Phase 5 has not started. Earlier entries describe their historical checkpoints; the latest entry records the current work and acceptance status.
+**Current status:** Phases 1–3 are Accepted, preserved at Git tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is Accepted following human review on 2026-09-28, with stable checkpoint tag `phase-4-accepted`. Phase 5 — UX & Mobile Check is implemented and waiting for human acceptance, including browser checks and target-user feedback. Phase 6 has not started. Earlier entries describe their historical checkpoints; the latest entry records the current work and acceptance status.
 
 ## Entry template
 
@@ -407,3 +407,69 @@ Phase 4 — Basic Signal Information: Accepted.
 ### Next step
 
 - Stop after publishing and verifying the accepted checkpoint. Phase 5 has not started; wait for a separate instruction before new feature work.
+
+
+---
+
+## 2026-09-28 — Phase 5: UX and mobile refinements
+
+### Date
+
+2026-09-28
+
+### Phase
+
+Phase 5 — UX & Mobile Check; waiting for human acceptance.
+
+### What was completed
+
+- Inspected the clean accepted Phase 4 state at `2a691cf` after the student authorized Phase 5. Reviewed the page structure, upload priority, feedback, sample count, waveform labels, and metric layout.
+- Moved the existing file input and live status ahead of detailed CSV instructions. Increased button prominence and minimum height; added backgrounds and borders to existing success/error feedback without changing messages or validation.
+- Presented existing metrics as responsive cards: one column below 600px, two above; strengthened value typography and kept units and explanations.
+- Kept horizontal overflow inside the waveform container, enlarged axis/tick labels, aligned endpoint labels inward, and added a named keyboard-focusable scroll region with swipe/arrow-key guidance. No plot coordinates or data processing changed.
+- Added two focused markup/accessibility checks and one SVG endpoint-label check. Updated `PLAN.md`, `README.md`, and `DECISIONS.md` with scope, evidence, trade-offs, and exact desktop/375px/430px acceptance instructions.
+- Added the pending target-user feedback template below. No participant responses have been collected or invented; suggestions will be recorded for review, not automatically implemented.
+- Packaged the acceptance instructions and eight existing CSV fixtures into ignored `outputs/phase-5-acceptance.zip`; archive integrity was checked.
+- Local implementation checkpoint uses commit message `style: refine Phase 5 upload and mobile usability`. No accepted-phase tag or push is performed before human acceptance.
+
+### Problems
+
+- The earlier browser-tool restriction remains unresolved and was respected without a repeat attempt or bypass. Actual browser layout, native file selection, touch/keyboard scrolling, zoom, and mobile interaction have not been verified by AI in this phase.
+- No new error incident occurred; `ERROR_LOG.md` remains unchanged.
+
+### Testing
+
+- Ran `/Users/shenzeyu/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node --test tests/*.test.cjs`: all 42 tests passed, including all 39 prior tests.
+- New focused checks cover upload order and preserved label/instructions/live status, a named focusable chart region with instructions and hidden initial state, and inward-facing time endpoint labels. These checks verify markup contracts, not assistive-technology behavior or browser layout.
+- Static CSS box calculations at 375px: content width 309px, chart width 560px, chart-only horizontal travel 251px, single-column metrics. At 430px: content 364px, chart 560px, travel 196px, single-column metrics. At 1280px: content and chart 582px, no chart overflow, two-column metrics. These are calculations from CSS, not measured browser screenshots.
+- Rendered existing fixture SVGs using preinstalled Sharp for QA only; inspected `valid.csv` at 560px and `second-valid.csv` at 582px. Tick text is 14px at the minimum chart width; axes and endpoint labels were readable in those standalone renders. No project dependency was added.
+- Confirmed `src/csv.js`, `src/signal-info.js`, and `src/app.js` are unchanged from `phase-4-accepted`. Existing coordinate/state/calculation tests still pass. Reviewed the diff for scope and whitespace.
+
+### Human acceptance
+
+- Pending: desktop browser flow, narrow viewports at 375px and 430px, no unreachable content, readable errors/waveform/metrics, and the target-user learning check.
+- Phase 5 is not Accepted. Prior phase acceptance does not cover this presentation change.
+
+### Next step
+
+- Stop after the local implementation checkpoint. Await the student's review and at least one target user's learning-check responses. Record suggestions without implementing them automatically. Do not begin Phase 6.
+
+### Phase 5 feedback record — awaiting human input
+
+Copy this template for each participant; a short anonymous identifier is sufficient.
+
+- Date:
+- Participant identifier and beginner/student context:
+- Device/browser and viewport width; actual device or emulation:
+- Desktop import/reset result (pass/fail, observations):
+- 375px import/error/scroll/metrics result (pass/fail, observations):
+- 430px import/error/scroll/metrics result (pass/fail, observations):
+- Page overflow, clipping, keyboard focus, or zoom issues:
+- CSV row chosen and where the participant located it on the waveform:
+- Participant's explanation of one parameter, in their own words:
+- Assistance needed or observed confusion:
+- Suggested improvements, recorded without implementation:
+- Review decision for each suggestion (defer / investigate / explicitly authorize a scoped change):
+- Explicit Phase 5 acceptance or remaining blocker:
+
+**Current feedback status:** Not collected. No human outcome is implied by the template.

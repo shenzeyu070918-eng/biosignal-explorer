@@ -285,3 +285,30 @@ This keeps formulas easy to inspect and test, adds no dependencies, and reuses t
 ### Trade-offs
 
 JavaScript floating-point arithmetic has finite precision and range; “full precision” means no additional internal rounding, not exact real-number arithmetic. Sampling Rate remains an estimate for approximately uniform sampling. No new input rules, statistical analysis, persistence, or interpretation are introduced. Real browser checks remain human acceptance work.
+
+
+## Decision: Focused upload, feedback, and narrow-screen presentation — 2026-09-28
+
+### Context
+
+Phase 5 permits only UX and responsive refinements. Inspection found the primary upload control below a long rules block, color-only emphasis for status, and 12-unit SVG ticks shrinking to 9px at the previous 480px chart minimum width. The five metrics were readable but lacked clear value hierarchy.
+
+### Options considered
+
+- Shrink the whole waveform to phone width, making axis labels smaller.
+- Build a responsive chart renderer or add zoom/pan controls, increasing code and interaction scope.
+- Retain native chart scrolling, enlarge labels, clarify instructions, and adjust only existing markup/styles and SVG label presentation.
+
+### Final choice
+
+Move upload and its live feedback before the detailed rules, preserving the native labeled input and all rules. Give its button a 44px minimum height and stronger contrast. Keep existing explicit success/error text and add panel backgrounds/borders. Use one metric-card column below 600px and two above, with larger values, wrapping, and unchanged units/explanations.
+
+Retain a chart-only horizontal scroll region with a 560px minimum SVG width, 16-unit ticks, and 18-unit axis labels. This keeps ticks at least 14px at the minimum width. Point first/last time labels inward to reduce endpoint clipping. Name the scroll region, make it keyboard-focusable, show a focus outline, and explain swipe/arrow-key use. Preserve plotted coordinates and data processing. Do not hide page overflow to mask layout problems.
+
+### Reason
+
+These changes improve the existing flow without dependencies, new business features, or responsive JavaScript. Native overflow is the smallest way to keep waveform labels readable at 375px and 430px.
+
+### Trade-offs
+
+The full waveform does not fit at once on narrow screens; users must scroll inside the chart and return left for the voltage axis. Real touch scrolling, page layout, and native input presentation depend on the browser and require human acceptance. Static sizing and SVG inspection cannot establish those results. Target-user suggestions will be recorded and prioritized only after review, not automatically implemented.

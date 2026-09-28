@@ -34,7 +34,8 @@ function createWaveformSvg({ time, voltage }) {
     const tickX = left + fraction * (right - left);
     const tickTime = firstTime * (1 - fraction) + lastTime * fraction;
     axes.push(`<line x1="${tickX}" y1="${top}" x2="${tickX}" y2="${bottom}" stroke="#dce4ea"/>`);
-    axes.push(`<text x="${tickX}" y="282" text-anchor="middle">${label(tickTime)}</text>`);
+    const anchor = tick === 0 ? "start" : tick === 4 ? "end" : "middle";
+    axes.push(`<text x="${tickX}" y="282" text-anchor="${anchor}">${label(tickTime)}</text>`);
   }
   // For a constant signal, one tick labels its actual voltage without an invented range.
   const voltageTicks = lowerVoltage === upperVoltage ? [0.5] : [0, 0.25, 0.5, 0.75, 1];
@@ -46,14 +47,14 @@ function createWaveformSvg({ time, voltage }) {
   }
 
   // All interpolated content comes from validated numbers, never raw CSV or filenames.
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320" role="img" aria-labelledby="ecg-title ecg-description" font-family="system-ui, sans-serif" font-size="12" fill="#1c2d3d">
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320" role="img" aria-labelledby="ecg-title ecg-description" font-family="system-ui, sans-serif" font-size="16" fill="#1c2d3d">
     <title id="ecg-title">ECG waveform</title>
     <desc id="ecg-description">Imported voltage in millivolts plotted against time in seconds. Straight lines connect each consecutive sample.</desc>
     ${axes.join("\n")}
     <path d="M ${left} ${top} V ${bottom} H ${right}" fill="none" stroke="#627787"/>
     <polyline points="${points}" fill="none" stroke="#176b83" stroke-width="2" stroke-linejoin="round"/>
-    <text x="344" y="310" text-anchor="middle" font-size="14">Time (s)</text>
-    <text x="16" y="142" text-anchor="middle" font-size="14" transform="rotate(-90 16 142)">Voltage (mV)</text>
+    <text x="344" y="310" text-anchor="middle" font-size="18">Time (s)</text>
+    <text x="16" y="142" text-anchor="middle" font-size="18" transform="rotate(-90 16 142)">Voltage (mV)</text>
   </svg>`;
 }
 

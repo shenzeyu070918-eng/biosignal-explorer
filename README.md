@@ -6,9 +6,9 @@ BioSignal Explorer is a small learning project for students beginning to study E
 
 The MVP excludes React, Vue, Next.js, a backend, a database, login, diagnosis, arrhythmia classification, AI analysis, EEG/PPG/EMG, and complex signal processing.
 
-**Current status:** Phases 1–3 are Accepted, with stable Git tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is **Accepted** following human review on 2026-09-28, with stable checkpoint tag `phase-4-accepted`. Valid imports show the waveform, sample count, and Duration, Sampling Rate, Maximum, Minimum, and Mean. Phases 5–6 have not started. The Git remote `origin` is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`.
+**Current status:** Phases 1–3 are Accepted, with stable Git tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is **Accepted** following human review on 2026-09-28, with stable checkpoint tag `phase-4-accepted`. Valid imports show the waveform, sample count, and Duration, Sampling Rate, Maximum, Minimum, and Mean. Phase 5 — UX & Mobile Check is implemented and **waiting for human acceptance**. Phase 6 has not started. The Git remote `origin` is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`.
 
-**Run now:** Open `src/index.html` in a current browser. On this Mac, from the project directory, run `open src/index.html`. No installation, server, build step, or internet connection is required. Select a CSV using the file input; import starts immediately. Only the latest successful import is kept in memory. A new selection clears the previous data, sample count, waveform, and metrics; refreshing clears all results. The graph uses automatic axis ranges, so compare axis labels when changing files. On narrow screens, scroll the graph horizontally if needed.
+**Run now:** Open `src/index.html` in a current browser. On this Mac, from the project directory, run `open src/index.html`. No installation, server, build step, or internet connection is required. Select a CSV using the file input; import starts immediately. Only the latest successful import is kept in memory. A new selection clears the previous data, sample count, waveform, and metrics; refreshing clears all results. The graph uses automatic axis ranges, so compare axis labels when changing files. On narrow screens, swipe horizontally inside the graph to see the full waveform, or focus the chart with Tab and use arrow keys. The rest of the page should fit the viewport; metric cards use one column below 600px and two above it.
 
 **Ongoing development:** Keep the MVP small and evolve one phase at a time. Maintain `DEV_LOG.md`, `DECISIONS.md`, `ERROR_LOG.md`, and Git checkpoints. Accept each phase before starting the next; do not advance automatically.
 
@@ -94,4 +94,57 @@ Values are displayed with up to six significant digits and units; internal calcu
 6. Recheck the seven Phase 2 CSV cases from the earlier table: `valid.csv` and `exactly-five-percent.csv` succeed and show the expected metrics above; `wrong-headers.csv`, `non-numeric.csv`, `too-few-rows.csv`, `non-increasing.csv`, and `over-five-percent.csv` are rejected with the listed reason and no old results. Import a valid file before each invalid file to check clearing.
 7. Refresh after a valid import. Confirm the initial message returns and waveform, count, and metrics disappear.
 8. Confirm that labels/explanations are readable and that no heart-rate, R-peak, filtering, interpretation, classification, or AI features appear.
-9. Report acceptance or the exact failing file, step, and displayed values. Phase 4 has passed human acceptance; Phase 5 has not started and requires a separate instruction.
+9. Report acceptance or the exact failing file, step, and displayed values. Phase 4 has passed human acceptance; Phase 5 was subsequently authorized and its checklist follows below.
+
+
+## Phase 5 Human Acceptance
+
+**Pending.** UX changes are implemented; actual browser/mobile behavior and target-user understanding must be reviewed before acceptance. No new signal function was added.
+
+### AI evidence and limitations
+
+On 2026-09-28, all **42 automated tests** passed, including every prior test. Three focused additions check upload labeling/live feedback, the chart's named keyboard-focusable scroll region, and inward-facing time endpoint labels. CSV validation, metric calculation, and import-state source files are unchanged from `phase-4-accepted`.
+
+Static CSS box calculations (not browser measurements) give the following at default font size and 100% zoom:
+
+| Viewport width | Content width | Chart width | Chart-only horizontal travel | Metric columns |
+| ---: | ---: | ---: | ---: | ---: |
+| 375px | 309px | 560px | 251px | 1 |
+| 430px | 364px | 560px | 196px | 1 |
+| 1280px desktop | 582px | 582px | 0px | 2 |
+
+Waveform ticks render at at least 14px under these sizes. Standalone SVG renders were inspected at 560px and 582px widths. These checks do not verify browser CSS layout, actual page overflow, native file-picker behavior, touch/keyboard scrolling, or assistive-technology announcements. The prior browser-tool restriction was respected without a bypass. Human checks below are required.
+
+### Desktop steps
+
+1. Open `src/index.html` in a browser, refresh if already open, and use approximately 1280px viewport width at 100% zoom. Expect the prominent file-selection button before detailed CSV rules, “No file imported.”, and no result sections.
+2. Select `tests/fixtures/valid.csv`. Expect a clearly worded success panel, 4 samples, the existing waveform, and five readable metric cards. Values: Duration **0.012 s**, Sampling Rate **250 Hz**, Maximum **0.8 mV**, Minimum **-0.2 mV**, Mean **0.225 mV**. All labels and units should be visible; the page should not scroll sideways.
+3. Select `second-valid.csv`. Expect 5 samples, a replacement waveform from 10 to 10.016 s, and values **0.016 s / 250 Hz / 0.5 mV / -0.5 mV / 0.1 mV** in the same order.
+4. Select `non-numeric.csv`. Expect a distinct error panel explaining that voltage on line 3 must be numeric. Waveform, sample count, and all metrics disappear. Select `valid.csv` again to restore them.
+5. Use Tab to reach the upload control and, after a successful import, the chart. Both should have a visible focus outline. Confirm no content is hidden behind the outline or adjacent sections.
+6. Recheck the seven Phase 2 fixture outcomes in the earlier table, including acceptance of `exactly-five-percent.csv` and rejection of `over-five-percent.csv`. Accepted results must match the Phase 4 table; rejected files leave no old results.
+7. Refresh after a valid import. Expect the initial message and no waveform, count, or metrics. At 200% browser zoom, confirm text remains usable and that any chart overflow can be scrolled within its own region; reset to 100% afterward.
+
+### Narrow viewport / mobile steps
+
+1. In the browser's developer tools, enable the device/responsive toolbar, choose a responsive viewport, and set width **375px**, height approximately **812px**, at 100% browser zoom. Refresh. This tests a narrow viewport; an actual phone check, if available, should be recorded separately.
+2. Repeat desktop steps 2–4. The upload action must remain usable; success/error text must wrap. Metric cards should be one column with complete values and units. Scroll vertically through the full page: there should be no page-wide sideways scrolling or unreachable content.
+3. After a valid import, swipe or horizontally scroll **inside the chart** from the start to the end. The full waveform and last time label must be reachable. Return to the start to read the voltage axis. Chart-only horizontal scrolling is intentional so labels are not shrunk to fit the entire waveform on a phone.
+4. With a keyboard, Tab to the chart and use the left/right arrow keys. Confirm the scroll region works and its focus indicator is visible. Confirm page scrolling still works outside the chart.
+5. Import `non-numeric.csv`, read the complete line 3 error, then import `valid.csv` again. Refresh and verify reset. Optionally rename a copy of a fixture to a long `.csv` filename and confirm the status message wraps without widening the page.
+6. Set width **430px** (height approximately **932px**) and repeat steps 2–5. Record results for both widths independently, including any unreadable text or clipping.
+7. If using a real phone, open the project through your existing browser workflow, select the same saved CSV files, and repeat import → invalid → valid and chart swiping. Record device/browser and distinguish this from responsive emulation; no deployment is required for this phase.
+
+### Target-user learning check (at least one person)
+
+Ask a student who is beginning ECG study to use `valid.csv`. Do not explain the answers before their attempt.
+
+- “Choose one row in the CSV and point to where that time/voltage data point appears on the waveform.”
+- “Choose one displayed signal parameter and explain what it means in your own words.”
+- “Which step, label, or interaction was confusing? What would you change?”
+
+For the reviewer: the row `0.008,0.8` corresponds to the high point at 0.008 s and 0.8 mV. A valid explanation of Mean is the arithmetic average of the voltage values, 0.225 mV for this file; it is not a diagnostic conclusion. Other correctly explained parameters also satisfy the check.
+
+Record the participant's actual answers, any help needed, and suggestions using the template in `DEV_LOG.md`. Do not infer success or invent feedback. Suggestions are recorded for a later decision, not automatically implemented. If the user cannot make the connection, record the confusion and leave acceptance pending.
+
+Report the desktop, 375px, 430px, and learning-check results and explicitly accept Phase 5 or identify issues. Phase 6 remains unstarted.

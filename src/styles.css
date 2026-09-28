@@ -10,6 +10,7 @@
 body { margin: 0; padding: 24px; }
 
 main {
+  min-width: 0;
   max-width: 640px;
   margin: 32px auto;
   padding: 28px;
@@ -18,36 +19,50 @@ main {
   border-radius: 12px;
 }
 
-h1 { margin: 0; font-size: 1.75rem; }
+h1 { margin: 0; font-size: 1.75rem; overflow-wrap: anywhere; }
 h2 { margin: 16px 0 8px; font-size: 1.25rem; }
 ul { padding-left: 24px; }
 code { background: #edf2f5; padding: 2px 5px; }
 label { display: block; font-weight: 600; margin-bottom: 8px; }
-input { width: 100%; font: inherit; }
+input { display: block; width: 100%; min-width: 0; max-width: 100%; font: inherit; }
 input::file-selector-button {
-  padding: 8px 12px;
+  min-height: 44px;
+  padding: 10px 14px;
   margin-right: 12px;
-  background: #e7f1f3;
-  color: #174957;
-  border: 1px solid #9fbfc7;
+  background: #174957;
+  color: white;
+  border: 1px solid #174957;
   border-radius: 6px;
   cursor: pointer;
 }
-input:focus-visible { outline: 3px solid #226a83; outline-offset: 4px; }
-#import-status { margin-bottom: 0; overflow-wrap: anywhere; }
-#import-status[data-state="success"] { color: #19623e; }
-#import-status[data-state="error"] { color: #a12727; }
+input:focus-visible, #waveform-plot:focus-visible { outline: 3px solid #226a83; outline-offset: 4px; }
+#csv-rules { margin-top: 20px; padding-top: 4px; border-top: 1px solid #d8e0e7; }
+#import-status {
+  margin-bottom: 0;
+  padding: 12px;
+  border-left: 4px solid #627787;
+  border-radius: 4px;
+  background: #f4f6f8;
+  overflow-wrap: anywhere;
+}
+#import-status[data-state="success"] { color: #19623e; background: #edf7f0; border-color: #19623e; }
+#import-status[data-state="error"] { color: #a12727; background: #fff1f0; border-color: #a12727; }
 #sample-count { margin-top: 8px; font-weight: 600; }
 #waveform { margin-top: 24px; }
-#waveform-plot { overflow-x: auto; }
-#waveform-plot svg { display: block; width: 100%; min-width: 480px; height: auto; }
+#waveform-plot { max-width: 100%; overflow-x: auto; }
+#waveform-plot svg { display: block; width: 100%; min-width: 560px; height: auto; }
 .waveform-note { font-size: 0.875rem; color: #435666; }
 #signal-info { margin-top: 24px; }
-.metrics { margin: 0; }
-.metrics > div { padding: 10px 0; border-bottom: 1px solid #d8e0e7; }
+.metrics { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin: 0; }
+.metrics > div { min-width: 0; padding: 12px; background: #f4f6f8; border: 1px solid #d8e0e7; border-radius: 6px; }
 .metrics dt { font-weight: 600; }
 .metrics dd { margin: 0; overflow-wrap: anywhere; }
+.metrics dd[id] { font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums; }
 .metrics .metric-note { font-size: 0.875rem; color: #435666; }
+
+@media (min-width: 600px) {
+  .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 @media (max-width: 480px) {
   body { padding: 12px; }
