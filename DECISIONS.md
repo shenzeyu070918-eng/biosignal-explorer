@@ -312,3 +312,28 @@ These changes improve the existing flow without dependencies, new business featu
 ### Trade-offs
 
 The full waveform does not fit at once on narrow screens; users must scroll inside the chart and return left for the voltage axis. Real touch scrolling, page layout, and native input presentation depend on the browser and require human acceptance. Static sizing and SVG inspection cannot establish those results. Target-user suggestions will be recorded and prioritized only after review, not automatically implemented.
+
+
+## Decision: Publish the existing src directory with GitHub Pages — 2026-09-28
+
+### Context
+
+The student requested public deployment of the current static app without feature, UI, or framework changes. The entry page is `src/index.html`, with relative CSS/JavaScript paths. GitHub Pages was not yet configured; repository admin access was available.
+
+### Options considered
+
+- Publish the repository root, requiring an entry redirect or moving app files.
+- Duplicate the app into a `docs/` publishing directory, creating two copies to maintain.
+- Use a small GitHub Actions Pages workflow to upload `src/` directly, without a build step.
+
+### Final choice
+
+Enable GitHub Pages with the GitHub Actions source and deploy only `src/` using the official checkout, configure-pages, upload-pages-artifact, and deploy-pages actions. Run on pushes to `main` that change `src/**` or the workflow, and allow manual dispatch. Limit the deployment job to repository read, Pages write, and OIDC token permissions. Serialize deployments.
+
+### Reason
+
+This serves the current entry page at the repository URL without moving or copying application files. Relative assets already resolve beneath `/biosignal-explorer/`; no source changes, application dependencies, or build system are needed.
+
+### Trade-offs
+
+Publication depends on GitHub Actions and Pages availability. Documentation-only pushes do not redeploy unchanged app files. Repository documentation and tests remain in GitHub but are not included in the site artifact. Hosting serves static application files; selected ECG files still remain in the user's browser. Deployment does not advance the project to Phase 6 or substitute for target-user acceptance.

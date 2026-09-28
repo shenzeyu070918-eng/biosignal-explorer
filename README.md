@@ -8,6 +8,8 @@ The MVP excludes React, Vue, Next.js, a backend, a database, login, diagnosis, a
 
 **Current status:** Phases 1–3 are Accepted, with stable Git tags `phase-1-accepted`, `phase-2-accepted`, and `phase-3-accepted`. Phase 4 — Basic Signal Information is **Accepted** following human review on 2026-09-28, with stable checkpoint tag `phase-4-accepted`. Valid imports show the waveform, sample count, and Duration, Sampling Rate, Maximum, Minimum, and Mean. Phase 5 — UX & Mobile Check is implemented and **waiting for human acceptance**. Phase 6 has not started. The Git remote `origin` is configured as `https://github.com/shenzeyu070918-eng/biosignal-explorer.git`.
 
+**Public site:** [Open BioSignal Explorer](https://shenzeyu070918-eng.github.io/biosignal-explorer/). Published on 2026-09-28 with GitHub Pages. CSVs are still read locally in your browser; selecting a file does not upload it.
+
 **Run now:** Open `src/index.html` in a current browser. On this Mac, from the project directory, run `open src/index.html`. No installation, server, build step, or internet connection is required. Select a CSV using the file input; import starts immediately. Only the latest successful import is kept in memory. A new selection clears the previous data, sample count, waveform, and metrics; refreshing clears all results. The graph uses automatic axis ranges, so compare axis labels when changing files. On narrow screens, swipe horizontally inside the graph to see the full waveform, or focus the chart with Tab and use arrow keys. The rest of the page should fit the viewport; metric cards use one column below 600px and two above it.
 
 **Ongoing development:** Keep the MVP small and evolve one phase at a time. Maintain `DEV_LOG.md`, `DECISIONS.md`, `ERROR_LOG.md`, and Git checkpoints. Accept each phase before starting the next; do not advance automatically.
@@ -148,3 +150,15 @@ For the reviewer: the row `0.008,0.8` corresponds to the high point at 0.008 s a
 Record the participant's actual answers, any help needed, and suggestions using the template in `DEV_LOG.md`. Do not infer success or invent feedback. Suggestions are recorded for a later decision, not automatically implemented. If the user cannot make the connection, record the confusion and leave acceptance pending.
 
 Report the desktop, 375px, 430px, and learning-check results and explicitly accept Phase 5 or identify issues. Phase 6 remains unstarted.
+
+
+## GitHub Pages deployment
+
+- Public URL: https://shenzeyu070918-eng.github.io/biosignal-explorer/
+- Repository setting: **Settings → Pages → Source: GitHub Actions**; HTTPS is enforced. No further manual setting is required.
+- Workflow: `.github/workflows/pages.yml` uploads `src/` directly and deploys it with the official GitHub Pages actions. There is no build step or application dependency installation.
+- `src/index.html` becomes the public entry page. Existing relative CSS/JS paths resolve below `/biosignal-explorer/` without modifications. Only application files are included in the site artifact.
+- Pushes to `main` that change `src/**` or the workflow deploy automatically. For an explicit redeploy, use **Actions → Deploy GitHub Pages → Run workflow → main**. Documentation-only pushes do not redeploy unchanged application files.
+- First deployed commit: `c5920a0ea48c23f277ccb648aba041c2a63dec56`; [successful workflow run](https://github.com/shenzeyu070918-eng/biosignal-explorer/actions/runs/36395411951).
+- Verification on 2026-09-28: public entry and all five CSS/JS resources returned HTTP 200 and exactly matched local source bytes. The HTTPS page loaded in the browser; `valid.csv` displayed 4 samples, a waveform, and **0.012 s / 250 Hz / 0.8 mV / -0.2 mV / 0.225 mV**. `non-numeric.csv` displayed the line 3 error and cleared the waveform, sample count, and metrics. Refresh restored the initial empty state. All 42 existing automated tests passed.
+- This deployment smoke check does not replace the Phase 5 target-user feedback or its complete desktop/mobile acceptance checklist. No Phase 6 work was started.

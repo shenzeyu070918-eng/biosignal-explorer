@@ -473,3 +473,47 @@ Copy this template for each participant; a short anonymous identifier is suffici
 - Explicit Phase 5 acceptance or remaining blocker:
 
 **Current feedback status:** Not collected. No human outcome is implied by the template.
+
+
+---
+
+## 2026-09-28 — Public deployment: GitHub Pages
+
+### Date
+
+2026-09-28
+
+### Phase
+
+Deployment-only work package for the existing Phase 5 application. No Phase 6 work.
+
+### What was completed
+
+- Inspected the repository at `ad06859`: static entry in `src/`, relative assets, no existing Pages site. Confirmed repository admin access and that Actions were already enabled.
+- Configured Pages to use GitHub Actions with HTTPS enforced. Added `.github/workflows/pages.yml`, which uploads only `src/` and deploys it without a build step. Triggers are relevant `main` pushes and manual dispatch; deployment jobs are serialized.
+- Pushed deployment commit `c5920a0ea48c23f277ccb648aba041c2a63dec56` and the previously local Phase 5 implementation commit to `main`.
+- GitHub Actions run `36395411951` completed successfully: https://github.com/shenzeyu070918-eng/biosignal-explorer/actions/runs/36395411951.
+- Public URL: https://shenzeyu070918-eng.github.io/biosignal-explorer/.
+- Recorded the deployment method in `DECISIONS.md`, live URL and maintenance instructions in `README.md`, and verification results here. No manual GitHub setting remains required.
+- Application source, UI, business logic, validation rules, and all existing tests remain unchanged from `ad06859`. No feedback feature was implemented.
+
+### Problems
+
+- The first HTTP verification using local Python failed certificate trust validation. System curl verified HTTPS successfully without disabling certificate checks; see `ERROR_LOG.md`.
+- The public browser tab's initial navigation wait timed out, but inspecting the same tab showed the page had loaded. The subsequent browser checks succeeded. The old local-file URL restriction was not bypassed; this check used the newly published HTTPS site requested by the student.
+
+### Testing
+
+- All 42 existing automated tests passed with the bundled Node runtime: `node --test tests/*.test.cjs`.
+- Public entry page plus `styles.css`, `csv.js`, `waveform.js`, `signal-info.js`, and `app.js`: all HTTP 200, with byte-for-byte equality to local source. This verifies relative resource paths beneath the repository URL.
+- Actual public-browser smoke check: page loaded with the native CSV input and initial empty state. Selected synthetic `valid.csv`; observed success, 4 samples, waveform, Duration 0.012 s, Sampling Rate 250 Hz, Maximum 0.8 mV, Minimum -0.2 mV, and Mean 0.225 mV.
+- Selected `non-numeric.csv`; observed the line 3 voltage validation error and removal of waveform, sample count, and metrics. Reloaded the page and verified the initial empty state.
+- Confirmed successful GitHub Actions deployment and reviewed the Git diff for application/test preservation and whitespace.
+
+### Human acceptance
+
+- The student explicitly authorized publishing the current app. Deployment verification is complete; this does not mark Phase 5's target-user feedback or full desktop/mobile checklist complete.
+
+### Next step
+
+- Stop after pushing the deployment records and verifying repository synchronization. Do not implement feedback suggestions or start Phase 6.

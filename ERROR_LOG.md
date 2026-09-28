@@ -47,3 +47,26 @@ The tool restriction was not bypassed or resolved. Parser and import-state behav
 ### What did I learn?
 
 Distinguish a test-tool restriction from an application error, and report exactly which behavior was verified and which still needs human review.
+
+
+## 2026-09-28 — Local Python HTTPS verification failed
+
+### What happened?
+
+After Pages deployment succeeded, a verification request through the local Python 3.14 urllib failed with `CERTIFICATE_VERIFY_FAILED: unable to get local issuer certificate` before returning a page response.
+
+### What did we first think was wrong?
+
+The message indicated a certificate trust failure in the verification request; it did not establish an application or deployment failure.
+
+### What was the real cause?
+
+The local Python HTTPS client could not build a trusted certificate chain. System curl, with certificate checks enabled, subsequently retrieved the same public URL and all five assets successfully, and the browser loaded the site. No application-path issue was found.
+
+### How was it fixed?
+
+Completed HTTP/content verification using system curl without disabling TLS verification or modifying certificate stores. All six responses were HTTP 200 and matched the local files exactly. The Python environment was left unchanged.
+
+### What did I learn?
+
+A verification client's trust configuration can fail independently of a deployed site. Verify with a correctly configured client before changing application code or weakening certificate checks.
